@@ -1,0 +1,26 @@
+import { libxslt } from "./module";
+
+export const {
+  ccall,
+  cwrap,
+  UTF8ToString,
+  getValue,
+  setValue,
+  lengthBytesUTF8,
+  stringToUTF8,
+  stringToUTF8Array,
+  stringToNewUTF8,
+  writeArrayToMemory,
+  getNativeTypeSize,
+  intArrayToString,
+  intArrayFromString,
+  warnOnce,
+  FS_createPath,
+  FS_createDataFile,
+  FS_createPreloadedFile,
+  FS_unlink,
+  FS_createLazyFile,
+  FS_createDevice,
+  addRunDependency,
+  removeRunDependency,
+} = libxslt;

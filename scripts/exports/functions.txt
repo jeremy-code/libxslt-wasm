@@ -1,0 +1,65 @@
+# C
+_free
+_malloc
+# Libxml2
+_xmlCleanupParser
+_xmlGetExternalEntityLoader
+_xmlInitParser
+_xmlLoadExternalEntity
+_xmlReadDoc
+_xmlReadFile
+## Tree
+_xmlFreeDoc
+_xmlBufferCreate
+# Libxslt
+## Extensions
+_xsltInitGlobals
+## Extra
+_xsltRegisterAllExtras
+## Transform
+_xsltApplyStylesheet
+## xslt
+_xsltCleanupGlobals
+_xsltInit
+## xsltInternals
+_xsltLoadStylesheetPI
+_xsltFreeStylesheet
+## xsltutils
+_xsltSaveResultToFile
+# Libexslt
+_exsltRegisterAll
+# OTHER
+_xmlSaveFormatFile
+_xmlSaveFormatFileTo
+_xmlAllocOutputBuffer
+_xmlCharStrdup
+_xmlDocDumpFormatMemory
+_xmlDocDumpMemory
+#OTHER
+_xsltRegisterExtras
+_exsltCommonRegister
+_exsltMathRegister
+_exsltSetsRegister
+_exsltFuncRegister
+_exsltStrRegister
+_exsltDateRegister
+_exsltSaxonRegister
+_exsltDynRegister
+_xmlBufferCreateSize
+_xmlDocDumpFormatMemory
+_xmlBufferDetach
+_xmlBufferGrow
+_xmlBufferFree
+_xmlBufferResize
+_xmlBufferLength
+_xmlBufferCreate
+_xmlBufferWriteChar
+_xmlAllocOutputBuffer
+_htmlDocContentDumpOutput
+_xmlOutputBufferGetContent
+_xmlNodeDumpOutput
+_xmlOutputBufferGetSize
+_xmlOutputBufferClose
+_xsltFreeStylesheet
+_xmlCopyDoc
+_xsltParseStylesheetDoc

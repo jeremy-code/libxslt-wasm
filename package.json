@@ -1,0 +1,59 @@
+{
+  "name": "libxslt-wasm",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "tsup",
+    "compile": "./scripts/compile.sh",
+    "docker:build": "./scripts/build.sh",
+    "docker:run": "./scripts/run.sh"
+  },
+  "keywords": [],
+  "author": "Jeremy Nguyen <nguyen.jeremyt@gmail.com> (https://jeremy.ng)",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./interfaces": {
+      "types": "./dist/src/interfaces.d.ts",
+      "default": "./dist/interfaces.js"
+    },
+    "./parser/*": {
+      "types": "./dist/src/parser/*",
+      "default": "./dist/parser/*"
+    },
+    "./internal/*": {
+      "types": "./dist/src/transform/*",
+      "default": "./dist/transform/*"
+    },
+    "./output/libxslt": {
+      "types": "./dist/output/libxslt.d.ts",
+      "default": "./dist/output/libxslt.js"
+    },
+    "./output/libxsltWasm": {
+      "types": "./dist/output/libxslt.d.ts",
+      "default": "./dist/output/libxslt.js"
+    }
+  },
+  "imports": {
+    "#libxslt": {
+      "types": "../output/libxslt.d.ts",
+      "default": "../output/libxslt.js"
+    },
+    "#libxsltWasm": "../output/libxslt.wasm"
+  },
+  "dependencies": {
+    "xmlhttprequest-ssl": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "pnpm@10.8.1+sha512.c50088ba998c67b8ca8c99df8a5e02fd2ae2e2b29aaf238feaa9e124248d3f48f9fb6db2424949ff901cffbb5e0f0cc1ad6aedb602cd29450751d11c35023677"
+}

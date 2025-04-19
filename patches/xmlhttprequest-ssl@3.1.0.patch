@@ -1,0 +1,26 @@
+diff --git a/lib/XMLHttpRequest.js b/lib/XMLHttpRequest.js
+index 8bbc9045975b549b98d5585ab156b385bcba5ca7..622e42c3b9416875bb4d1cabf2e2536eb19bcffa 100644
+--- a/lib/XMLHttpRequest.js
++++ b/lib/XMLHttpRequest.js
+@@ -238,10 +238,8 @@ function XMLHttpRequest(opts) {
+    * @returns {Buffer}
+    */
+   var stringToBuffer = function(str) {
+-    const ab = new ArrayBuffer(str.length)
+-    const buf = Buffer.from(ab);
+-    for (let k = 0; k < str.length; k++)
+-      buf[k] = Number(str.charCodeAt(k));
++    const encoder = new TextEncoder();
++    const buf = Buffer.from(encoder.encode(str));
+     return buf;
+   }
+ 
+@@ -475,7 +473,7 @@ function XMLHttpRequest(opts) {
+ 
+       case 'data:':
+         isDataUri = true;
+-      
++
+       case 'file:':
+         isLocal = true;
+         break;

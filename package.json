@@ -1,6 +1,6 @@
 {
   "name": "libxslt-wasm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "type": "module",
   "scripts": {
@@ -26,13 +26,13 @@
       "types": "./dist/src/parser/*",
       "default": "./dist/parser/*"
     },
-    "./internal/*": {
-      "types": "./dist/src/internal/*",
-      "default": "./dist/internal/*"
+    "./internal": {
+      "types": "./dist/internal/index.d.ts",
+      "default": "./dist/internal/index.js"
     },
-    "./output": {
-      "types": "./dist/src/output/index.d.ts",
-      "default": "./dist/output/index.js"
+    "./internal/*": {
+      "types": "./dist/internal/*.d.ts",
+      "default": "./dist/internal/*"
     },
     "./output/libxslt": {
       "types": "./dist/output/libxslt.d.ts",

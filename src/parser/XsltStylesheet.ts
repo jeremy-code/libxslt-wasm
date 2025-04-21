@@ -34,52 +34,50 @@ const parseXsltParams = (
 };
 
 export class XsltStylesheet extends XmlDocument {
-  static fromXmlDocument(xmlDocument: XmlDocument) {
+  static async fromXmlDocument(xmlDocument: XmlDocument) {
     if (xmlDocument.dataOffset === null) {
       throw new Error("XML document has already been disposed");
     }
 
-    const xsltStylesheet = xsltParseStylesheetDoc(xmlDocument.dataOffset);
+    const xsltStylesheet = await xsltParseStylesheetDoc(xmlDocument.dataOffset);
     return new XsltStylesheet(xsltStylesheet);
   }
 
-  static fromEmbeddedXmlDocument(xmlDocument: XmlDocument) {
+  static async fromEmbeddedXmlDocument(xmlDocument: XmlDocument) {
     if (xmlDocument.dataOffset === null) {
       throw new Error("XML document has already been disposed");
     }
 
-    const xsltStylesheetPtr = xsltLoadStylesheetPI(xmlDocument.dataOffset);
+    const xsltStylesheetPtr = await xsltLoadStylesheetPI(
+      xmlDocument.dataOffset,
+    );
 
     return xsltStylesheetPtr === 0
       ? null
       : new XsltStylesheet(xsltStylesheetPtr);
   }
 
-  static fromFileOrUrl(fileOrUrl: string) {
-    return this.fromXmlDocument(super.fromFileOrUrl(fileOrUrl));
+  static async fromFileOrUrl(fileOrUrl: string) {
+    return this.fromXmlDocument(await super.fromFileOrUrl(fileOrUrl));
   }
 
-  static fromString(string: string) {
-    return this.fromXmlDocument(super.fromString(string));
+  static async fromString(string: string) {
+    return this.fromXmlDocument(await super.fromString(string));
   }
 
-  clone(options?: { isRecursive: boolean }) {
-    return XsltStylesheet.fromXmlDocument(super.clone(options));
-  }
-
-  apply(xmlDocument: XmlDocument, params?: Record<string, string>) {
+  async apply(xmlDocument: XmlDocument, params?: Record<string, string>) {
     if (this.dataOffset === null) {
       throw new Error("XSLT stylesheet has already been disposed");
     } else if (xmlDocument.dataOffset === null) {
       throw new Error("XML document has already been disposed");
     }
 
-    const result = xsltApplyStylesheet(
+    const result = await xsltApplyStylesheet(
       this.dataOffset,
       xmlDocument.dataOffset,
       parseXsltParams(params),
     );
-    if (result === null) {
+    if (result === 0) {
       throw new Error("Failed to apply stylesheet");
     }
     return new XmlDocument(result);

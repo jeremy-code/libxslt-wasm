@@ -1,6 +1,6 @@
 {
   "name": "libxslt-wasm",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "type": "module",
   "scripts": {
@@ -27,31 +27,28 @@
       "default": "./dist/parser/*"
     },
     "./internal/*": {
-      "types": "./dist/src/transform/*",
-      "default": "./dist/transform/*"
+      "types": "./dist/src/internal/*",
+      "default": "./dist/internal/*"
+    },
+    "./output": {
+      "types": "./dist/src/output/index.d.ts",
+      "default": "./dist/output/index.js"
     },
     "./output/libxslt": {
       "types": "./dist/output/libxslt.d.ts",
       "default": "./dist/output/libxslt.js"
     },
-    "./output/libxsltWasm": {
-      "types": "./dist/output/libxslt.d.ts",
-      "default": "./dist/output/libxslt.js"
-    }
+    "./output/libxsltWasm": "./dist/output/libxslt.wasm"
   },
   "imports": {
     "#libxslt": {
-      "types": "../output/libxslt.d.ts",
-      "default": "../output/libxslt.js"
+      "types": "./dist/output/libxslt.d.ts",
+      "default": "./dist/output/libxslt.js"
     },
-    "#libxsltWasm": "../output/libxslt.wasm"
-  },
-  "dependencies": {
-    "xmlhttprequest-ssl": "^3.1.0"
+    "#libxsltWasm": "./dist/output/libxslt.wasm"
   },
   "devDependencies": {
     "@types/node": "^22.14.1",
-    "tsup": "^8.4.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   },

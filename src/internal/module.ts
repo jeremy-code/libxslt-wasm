@@ -1,4 +1,4 @@
-import createLibxsltModule from "../../output/libxslt";
+import createLibxsltModule from "#libxslt";
 
 const libxslt = await createLibxsltModule();
 

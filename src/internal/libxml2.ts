@@ -1,21 +1,43 @@
 import { libxslt } from "./module";
 
-export const xmlCleanupParser = libxslt._xmlCleanupParser;
-export const xmlGetExternalEntityLoader = libxslt._xmlGetExternalEntityLoader;
-export const xmlInitParser = libxslt._xmlInitParser;
-export const xmlLoadExternalEntity = libxslt._xmlLoadExternalEntity;
-export const xmlReadDoc = libxslt._xmlReadDoc;
-export const xmlReadFile = libxslt._xmlReadFile;
-export const xmlFreeDoc = libxslt._xmlFreeDoc;
-export const xmlBufferCreate = libxslt._xmlBufferCreate;
-export const xmlSaveFormatFile = libxslt._xmlSaveFormatFile;
-export const xmlSaveFormatFileTo = libxslt._xmlSaveFormatFileTo;
-export const xmlAllocOutputBuffer = libxslt._xmlAllocOutputBuffer;
-export const xmlCharStrdup = libxslt._xmlCharStrdup;
-export const xmlDocDumpFormatMemory = libxslt._xmlDocDumpFormatMemory;
-export const xmlDocDumpMemory = libxslt._xmlDocDumpMemory;
-export const xmlOutputBufferGetSize = libxslt._xmlOutputBufferGetSize;
-export const xmlOutputBufferGetContent = libxslt._xmlOutputBufferGetContent;
-export const xmlOutputBufferClose = libxslt._xmlOutputBufferClose;
-export const xmlNodeDumpOutput = libxslt._xmlNodeDumpOutput;
-export const xmlCopyDoc = libxslt._xmlCopyDoc;
+export const {
+  // <libxml/encoding.h>
+  _xmlDetectCharEncoding: xmlDetectCharEncoding,
+
+  // <libxml/parser.h>
+  _xmlCleanupParser: xmlCleanupParser,
+  _xmlGetExternalEntityLoader: xmlGetExternalEntityLoader,
+  _xmlInitParser: xmlInitParser,
+  _xmlInputSetEncodingHandler: xmlInputSetEncodingHandler,
+  _xmlLoadExternalEntity: xmlLoadExternalEntity,
+  _xmlNewInputFromFd: xmlNewInputFromFd,
+  _xmlNewInputFromIO: xmlNewInputFromIO,
+  _xmlNewInputFromMemory: xmlNewInputFromMemory,
+  _xmlNewInputFromString: xmlNewInputFromString,
+  _xmlNewInputFromUrl: xmlNewInputFromUrl,
+  _xmlParseDTD: xmlParseDTD,
+  _xmlParseEntity: xmlParseEntity,
+  _xmlReadDoc: xmlReadDoc,
+  _xmlReadFd: xmlReadFd,
+  _xmlReadFile: xmlReadFile,
+  _xmlReadIO: xmlReadIO,
+  _xmlReadMemory: xmlReadMemory,
+
+  // <libxml/tree.h>
+  _xmlDocDump: xmlDocDump,
+  _xmlDocFormatDump: xmlDocFormatDump,
+  _xmlNodeDumpOutput: xmlNodeDumpOutput,
+  _xmlFreeDoc: xmlFreeDoc,
+
+  // <libxml/io.h>
+  _xmlAllocOutputBuffer: xmlAllocOutputBuffer,
+  _xmlOutputBufferClose: xmlOutputBufferClose,
+  _xmlOutputBufferCreateFd: xmlOutputBufferCreateFd,
+  _xmlOutputBufferCreateFile: xmlOutputBufferCreateFile,
+  _xmlOutputBufferCreateFilename: xmlOutputBufferCreateFilename,
+  _xmlOutputBufferGetContent: xmlOutputBufferGetContent,
+  _xmlOutputBufferGetSize: xmlOutputBufferGetSize,
+
+  // <libxml/string.h>
+  _xmlCharStrdup: xmlCharStrdup,
+} = libxslt;

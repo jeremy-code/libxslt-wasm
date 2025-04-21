@@ -1,16 +1,29 @@
 import { libxslt } from "./module";
 
-// Libxslt
-export const xsltInitGlobals = libxslt._xsltInitGlobals;
-export const xsltRegisterAllExtras = libxslt._xsltRegisterAllExtras;
-export const xsltApplyStylesheet = libxslt._xsltApplyStylesheet;
-export const xsltCleanupGlobals = libxslt._xsltCleanupGlobals;
-export const xsltInit = libxslt._xsltInit;
-export const xsltLoadStylesheetPI = libxslt._xsltLoadStylesheetPI;
-export const xsltFreeStylesheet = libxslt._xsltFreeStylesheet;
-export const xsltSaveResultToFile = libxslt._xsltSaveResultToFile;
-
-// Libxslt - EXSLT
-export const exsltRegisterAll = libxslt._exsltRegisterAll;
-
-export const xsltParseStylesheetDoc = libxslt._xsltParseStylesheetDoc;
+export const {
+  // <libxslt/extensions.h>
+  _xsltInitGlobals: xsltInitGlobals,
+  // <libxslt/extra.h>
+  _xsltRegisterAllExtras: xsltRegisterAllExtras,
+  // <libxslt/transform.h>
+  _xsltApplyStylesheet: xsltApplyStylesheet,
+  // <libxslt/xslt.h>
+  _xsltCleanupGlobals: xsltCleanupGlobals,
+  _xsltInit: xsltInit,
+  // <libxslt/xsltInternals.h>
+  _xsltFreeStylesheet: xsltFreeStylesheet,
+  _xsltLoadStylesheetPI: xsltLoadStylesheetPI,
+  _xsltParseStylesheetDoc: xsltParseStylesheetDoc,
+  // <libxslt/xsltutils.h>
+  _xsltSaveResultToFile: xsltSaveResultToFile,
+  // exslt
+  _exsltCommonRegister: exsltCommonRegister,
+  _exsltDateRegister: exsltDateRegister,
+  _exsltDynRegister: exsltDynRegister,
+  _exsltFuncRegister: exsltFuncRegister,
+  _exsltMathRegister: exsltMathRegister,
+  _exsltRegisterAll: exsltRegisterAll,
+  _exsltSaxonRegister: exsltSaxonRegister,
+  _exsltSetsRegister: exsltSetsRegister,
+  _exsltStrRegister: exsltStrRegister,
+} = libxslt;

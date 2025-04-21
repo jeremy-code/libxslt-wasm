@@ -1,65 +1,67 @@
 # C
 _free
 _malloc
-# Libxml2
+# main.c
+_main
+# libxml
+## <libxml/encoding.h>
+_xmlDetectCharEncoding
+## <libxml/parser.h>
 _xmlCleanupParser
 _xmlGetExternalEntityLoader
 _xmlInitParser
+_xmlInputSetEncodingHandler
 _xmlLoadExternalEntity
+_xmlNewInputFromFd
+_xmlNewInputFromIO
+_xmlNewInputFromMemory
+_xmlNewInputFromString
+_xmlNewInputFromUrl
+_xmlParseDTD
+_xmlParseEntity
 _xmlReadDoc
+_xmlReadFd
 _xmlReadFile
-## Tree
+_xmlReadIO
+_xmlReadMemory
+## <libxml/tree.h>
+_xmlDocDump
+_xmlDocFormatDump
 _xmlFreeDoc
-_xmlBufferCreate
+_xmlNodeDumpOutput
+## <libxml/io.h>
+_xmlAllocOutputBuffer
+_xmlOutputBufferClose
+_xmlOutputBufferCreateFd
+_xmlOutputBufferCreateFile
+_xmlOutputBufferCreateFilename
+_xmlOutputBufferGetContent
+_xmlOutputBufferGetSize
+## <libxml/string.h>
+_xmlCharStrdup
 # Libxslt
-## Extensions
+## <libxslt/extensions.h>
 _xsltInitGlobals
-## Extra
+## <libxslt/extra.h>
 _xsltRegisterAllExtras
-## Transform
+## <libxslt/transform.h>
 _xsltApplyStylesheet
-## xslt
+## <libxslt/xslt.h>
 _xsltCleanupGlobals
 _xsltInit
-## xsltInternals
+## <libxslt/xsltInternals.h>
+_xsltFreeStylesheet
 _xsltLoadStylesheetPI
-_xsltFreeStylesheet
-## xsltutils
-_xsltSaveResultToFile
-# Libexslt
-_exsltRegisterAll
-# OTHER
-_xmlSaveFormatFile
-_xmlSaveFormatFileTo
-_xmlAllocOutputBuffer
-_xmlCharStrdup
-_xmlDocDumpFormatMemory
-_xmlDocDumpMemory
-#OTHER
-_xsltRegisterExtras
-_exsltCommonRegister
-_exsltMathRegister
-_exsltSetsRegister
-_exsltFuncRegister
-_exsltStrRegister
-_exsltDateRegister
-_exsltSaxonRegister
-_exsltDynRegister
-_xmlBufferCreateSize
-_xmlDocDumpFormatMemory
-_xmlBufferDetach
-_xmlBufferGrow
-_xmlBufferFree
-_xmlBufferResize
-_xmlBufferLength
-_xmlBufferCreate
-_xmlBufferWriteChar
-_xmlAllocOutputBuffer
-_htmlDocContentDumpOutput
-_xmlOutputBufferGetContent
-_xmlNodeDumpOutput
-_xmlOutputBufferGetSize
-_xmlOutputBufferClose
-_xsltFreeStylesheet
-_xmlCopyDoc
 _xsltParseStylesheetDoc
+## <libxslt/xsltutils.h>
+_xsltSaveResultToFile
+# exslt
+_exsltCommonRegister
+_exsltDateRegister
+_exsltDynRegister
+_exsltFuncRegister
+_exsltMathRegister
+_exsltRegisterAll
+_exsltSaxonRegister
+_exsltSetsRegister
+_exsltStrRegister

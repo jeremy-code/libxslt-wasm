@@ -9,9 +9,29 @@
 #include <libxslt/xsltutils.h>
 #include <pthread.h>
 
-// `emscripten_fetch` must be called in a pthread to be synchronous
-pthread_t fetchThread;
-em_proxying_queue *proxyQueue = NULL;
+EM_ASYNC_JS(void, fetchBytes, (const char *url, void **pbuffer, int *pnum, int *perror), {
+  const response = await fetch(UTF8ToString(url), {
+    // Prioritize XML documents (including application/*+xml) based on MIME type
+    headers: {
+      "Accept": "application/xslt+xml, application/xml, text/xml, application/xhtml+xml;q=0.8, application/*; q=0.6, */*;q=0.5",
+    }
+  });
+
+  if (!response.ok) {
+    setValue(pbuffer, 0, "i32");
+    setValue(pnum, 0, "i32");
+    setValue(perror, response.status, "i32");
+  } else {
+    const responseBytes = await response.bytes();
+    const bufferToFill =
+        _malloc(responseBytes.length * responseBytes.BYTES_PER_ELEMENT);
+    // In future (WASM 2.0), use mass memory copy
+    HEAPU8.set(responseBytes, bufferToFill);
+    setValue(pnum, responseBytes.length, "i32");
+    setValue(perror, 0, "i32");
+    setValue(pbuffer, bufferToFill, "*");
+  }
+});
 
 /**
  * Since `xmlDefaultExternalEntityLoader` is not exported in
@@ -22,104 +42,54 @@ em_proxying_queue *proxyQueue = NULL;
  */
 static xmlExternalEntityLoader defaultExternalEntityLoader = NULL;
 
-typedef struct _fetchArgs {
-  const char *URL;          /* The system ID of the resource requested */
-  const char *ID;           /* The public ID of the resource requested */
-  xmlParserCtxtPtr context; /* the XML parser context */
-  xmlParserInputPtr out;    /* the entity input parser */
-} fetchArgs;
-
-void EMSCRIPTEN_KEEPALIVE fetchExternalEntity(void *arg) {
-  fetchArgs *args = (fetchArgs *)arg;
-  const char *URL = args->URL;
-  xmlParserCtxtPtr context = args->context;
-
-  // Prioritize XML documents (including application/*+xml) based on MIME type
-  const char *requestHeaders[] = {
-      "Accept",
-      "application/xslt+xml, application/xml, text/xml, application/xhtml+xml;q=0.8, application/*; q=0.6, */*;q=0.5",
-      NULL};
-  emscripten_fetch_attr_t attr;
-  emscripten_fetch_attr_init(&attr);
-  strcpy(attr.requestMethod, "GET");
-  attr.attributes =
-      EMSCRIPTEN_FETCH_LOAD_TO_MEMORY | EMSCRIPTEN_FETCH_SYNCHRONOUS;
-  attr.requestHeaders = requestHeaders;
-
-  emscripten_fetch_t *fetch = emscripten_fetch(&attr, URL);
-
-  if (fetch->status != 200) {
-    args->out = NULL;
-    emscripten_fetch_close(fetch);
-    xmlParserError(context, "%s: emscripten_fetch() failed with status %hu: %s",
-                   fetch->url, fetch->status, fetch->statusText);
-  } else {
-    args->out = xmlNewInputFromMemory(URL, fetch->data, fetch->numBytes,
-                                      XML_INPUT_BUF_ZERO_TERMINATED);
-    xmlCharEncodingHandlerPtr out = xmlGetCharEncodingHandler(
-        xmlDetectCharEncoding(xmlCharStrdup(fetch->data), fetch->numBytes));
-    xmlInputSetEncodingHandler(args->out, out);
-    emscripten_fetch_close(fetch);
-  }
-}
-
-xmlParserInputPtr EMSCRIPTEN_KEEPALIVE libxsltWasmExternalEntityLoader(const char *URL,
-                                                  const char *ID,
-                                                  xmlParserCtxtPtr context) {
+xmlParserInputPtr EMSCRIPTEN_KEEPALIVE libxsltWasmExternalEntityLoader(
+    const char *URL, const char *ID, xmlParserCtxtPtr context) {
   xmlParserInputPtr result = NULL;
   xmlURIPtr uri = xmlParseURI(URL);
 
   if (uri != NULL) {
+    // Node.js undici does not support fetching `file://` URLs
+    int isFile = (uri->scheme == NULL || (strcmp(uri->scheme, "file") == 0));
     xmlFreeURI(uri);
 
-    // Since `emscripten_fetch` is based on XHR rather than Fetch, the `file://`
-    // protocol is not supported.
-    if (strcmp(uri->scheme, "file") != 0) {
-      fetchArgs *args = malloc(sizeof(fetchArgs));
-      *args = (fetchArgs){URL, ID, context, NULL};
-      if ((emscripten_proxy_sync(proxyQueue, fetchThread, fetchExternalEntity,
-                                 args)) == 1) {
-        result = args->out;
-      } else {
+    if (!isFile) {
+      void *fetchBuffer;
+      int numBytes, error;
+
+      fetchBytes(URL, &fetchBuffer, &numBytes, &error);
+
+      if (error != 0) {
         xmlParserError(
             context,
-            "fetchExternalEntity() failed on %s, id %s. fetchThread may have "
-            "exited or was canceled before work was complete\n",
+            "fetchExternalEntity() failed on %s, id %s with status code %d\n",
+            URL, ID, error);
+        return NULL;
+      } else if (fetchBuffer == NULL) {
+        xmlParserError(
+            context,
+            "memory allocation failed in fetchExternalEntity() on %s, id %s\n",
             URL, ID);
-        result = NULL;
+        return NULL;
+      } else {
+        xmlParserInputPtr input = xmlNewInputFromMemory(
+            URL, fetchBuffer, numBytes, XML_INPUT_BUF_ZERO_TERMINATED);
+        free(fetchBuffer);
+        return input;
       }
-      free(args);
     }
   }
 
-  return (result == NULL && defaultExternalEntityLoader != NULL)
-             ? defaultExternalEntityLoader(URL, ID, context)
-             : result;
-}
-
-void *exit_with_live_runtime(void *arg) {
-  (void)arg;
-  emscripten_exit_with_live_runtime();
-  __builtin_unreachable();
-}
-
-void EMSCRIPTEN_KEEPALIVE cleanup() {
-  emscripten_proxy_execute_queue(proxyQueue);
-  if (proxyQueue != NULL) {
-    em_proxying_queue_destroy(proxyQueue);
+  if (defaultExternalEntityLoader != NULL) {
+    return defaultExternalEntityLoader(URL, ID, context);
   }
-  xsltCleanupGlobals();
-  xmlCleanupParser();
+
+  return NULL;
 }
 
-void EMSCRIPTEN_KEEPALIVE init() {
+int EMSCRIPTEN_KEEPALIVE main() {
   xmlInitParser();
-  proxyQueue = em_proxying_queue_create();
-
-  if (pthread_create(&fetchThread, /* attr */ NULL, exit_with_live_runtime,
-                     /* arg */ NULL) == 0) {
-    defaultExternalEntityLoader = xmlGetExternalEntityLoader();
-    xmlSetExternalEntityLoader(libxsltWasmExternalEntityLoader);
-  }
+  defaultExternalEntityLoader = xmlGetExternalEntityLoader();
+  xmlSetExternalEntityLoader(libxsltWasmExternalEntityLoader);
   xsltInit();
+  return 0;
 }

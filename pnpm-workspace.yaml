@@ -1,2 +1,0 @@
-patchedDependencies:
-  xmlhttprequest-ssl@3.1.0: patches/xmlhttprequest-ssl@3.1.0.patch

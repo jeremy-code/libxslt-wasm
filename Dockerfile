@@ -23,9 +23,9 @@ RUN cd libxml2 \
   && emconfigure ./configure \
     --disable-shared \
     --enable-static \
-    --with-http \
+    --without-push \
+    --without-reader \
     --without-python \
-    --without-threads \
   && emmake make install \
   && cd ..
 
@@ -34,9 +34,7 @@ RUN cd libxslt \
   && emconfigure ./configure \
     --disable-shared \
     --enable-static \
-    --with-http \
     --without-python \
-    --without-threads \
     XML_CONFIG=/src/libxml2/xml2-config \
     CFLAGS="$(pkg-config --cflags libxml-2.0)" \
     LDFLAGS="$(pkg-config --libs  libxml-2.0)" \

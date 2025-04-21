@@ -37,9 +37,14 @@ emcc \
   $(pkg-config --libs --cflags libxml-2.0 libxslt libexslt) \
   ${DEBUG:+${DEBUG_FLAGS[@]}} \
   ${SANITIZE:+${SANITIZE_FLAGS[@]}} \
+  -g2 \
+  -sJSPI=1 \
+  -sJSPI_EXPORTS=@${SOURCE_DIR}/scripts/exports/jspi.txt \
+  -sEXIT_RUNTIME=0 \
+  -sINVOKE_RUN=1 \
   -pthread \
   -lembind \
-  --emit-tsd $SOURCE_DIR/output/libxslt.d.ts \
+  --emit-tsd ${SOURCE_DIR}/dist/output/libxslt.d.ts \
   -sENVIRONMENT=node \
   -sEXPORTED_RUNTIME_METHODS=@${SOURCE_DIR}/scripts/exports/runtime_methods.txt \
   -sFORCE_FILESYSTEM=1 \
@@ -48,9 +53,7 @@ emcc \
   -sMODULARIZE=1 \
   -sEXPORT_ES6=1 \
   -sEXPORT_NAME="LibxsltModule" \
-  -sFETCH=1 \
-  --pre-js ${SOURCE_DIR}/module/xmlHttpRequest.js \
-  -o ${SOURCE_DIR}/output/libxslt.js \
+  -o ${SOURCE_DIR}/dist/output/libxslt.js \
   ${SOURCE_DIR}/module/main.c \
   ${SOURCE_DIR}/module/enum.cpp \
   ${SOURCE_DIR}/libxml2/.libs/libxml2.a \

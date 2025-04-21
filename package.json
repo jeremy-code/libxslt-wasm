@@ -1,6 +1,6 @@
 {
   "name": "libxslt-wasm",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "type": "module",
   "scripts": {
@@ -15,15 +15,15 @@
   "license": "MIT",
   "exports": {
     ".": {
-      "types": "./dist/src/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./interfaces": {
-      "types": "./dist/src/interfaces.d.ts",
+      "types": "./dist/interfaces.d.ts",
       "default": "./dist/interfaces.js"
     },
     "./parser/*": {
-      "types": "./dist/src/parser/*",
+      "types": "./dist/parser/*",
       "default": "./dist/parser/*"
     },
     "./internal": {

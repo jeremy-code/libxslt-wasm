@@ -1,6 +1,6 @@
 {
   "name": "libxslt-wasm",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "type": "module",
   "scripts": {
@@ -13,6 +13,9 @@
   "keywords": [],
   "author": "Jeremy Nguyen <nguyen.jeremyt@gmail.com> (https://jeremy.ng)",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

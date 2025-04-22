@@ -4,26 +4,31 @@ import {
   xmlReadDoc,
   xmlNodeDumpOutput,
   xmlFreeDoc,
+  htmlDocContentDumpFormatOutput,
 } from "../internal/libxml2";
-
 import { XmlOutputBuffer } from "./XmlOutputBuffer";
-
 import { DataSegment } from "../utils/DataSegment";
-
 import type { Encoding } from "../interfaces";
 import { free } from "../internal/main";
+import { NULL_POINTER } from "../constants";
 
-export class XmlDocument extends DataSegment {
+class XmlDocument extends DataSegment {
   static async fromFileOrUrl(
     fileOrUrl: string,
     encoding: Encoding | null = null,
   ) {
-    const encodingPtr: number = encoding ? stringToNewUTF8(encoding) : 0;
+    const encodingPtr: number | null = encoding
+      ? stringToNewUTF8(encoding)
+      : null;
     const fileOrUrlPtr = stringToNewUTF8(fileOrUrl);
     const xmlDocument = new XmlDocument(
-      await xmlReadFile(fileOrUrlPtr, encodingPtr, 1 | 2 | 4 | 8 | 1024),
+      await xmlReadFile(
+        fileOrUrlPtr,
+        encodingPtr ?? NULL_POINTER,
+        1 | 2 | 4 | 8 | 1024,
+      ),
     );
-    if (encodingPtr !== 0) {
+    if (encodingPtr !== null) {
       free(encodingPtr);
     }
     free(fileOrUrlPtr);
@@ -31,7 +36,8 @@ export class XmlDocument extends DataSegment {
   }
 
   static async fromString(xmlString: string) {
-    const xmlStringPtr = stringToNewUTF8(xmlString);
+    const xmlStringPtr =
+      xmlString !== "" ? stringToNewUTF8(xmlString) : NULL_POINTER;
 
     const xmlDocument = new XmlDocument(
       await xmlReadDoc(xmlStringPtr, 0, 0, 1 | 2 | 4 | 8 | 1024),
@@ -49,7 +55,7 @@ export class XmlDocument extends DataSegment {
 
   toString(options?: { format?: boolean; encoding?: Encoding }) {
     if (this.dataOffset === null) {
-      throw new Error("Document pointer is null");
+      throw new Error("XML document has already been disposed");
     }
 
     const xmlOutputBuffer = XmlOutputBuffer.allocate();
@@ -57,16 +63,24 @@ export class XmlDocument extends DataSegment {
       ? stringToNewUTF8(options.encoding)
       : null;
 
+    if (xmlOutputBuffer.dataOffset === null) {
+      throw new Error("Failed to allocate memory for XML output buffer");
+    }
+
     /**
+     * Since `xmlDocPtr` is a super pointer to `xmlNodePtr`, it can be passed to
+     * `cur`. While this usage may be suspect, this technique is used for for
+     * `htmlDocContentDumpOutput`.
+     *
      * @see {@link https://github.com/GNOME/libxml2/blob/master/HTMLtree.c#L938-L942}
      */
     xmlNodeDumpOutput(
-      Number(xmlOutputBuffer.dataOffset),
+      xmlOutputBuffer.dataOffset,
       /* doc */ this.dataOffset,
       /* cur */ this.dataOffset,
       /* level */ 0,
       options?.format ? 1 : 0,
-      /* encoding */ Number(encodingPtr),
+      /* encoding */ encodingPtr ?? NULL_POINTER,
     );
 
     if (encodingPtr !== null) {
@@ -77,4 +91,40 @@ export class XmlDocument extends DataSegment {
 
     return xmlString;
   }
+
+  toHtmlOutputBuffer(options?: { format?: boolean; encoding?: Encoding }) {
+    if (this.dataOffset === null) {
+      throw new Error("XML document has already been disposed");
+    }
+    const xmlOutputBuffer = XmlOutputBuffer.allocate();
+    const encodingPtr = options?.encoding
+      ? stringToNewUTF8(options.encoding)
+      : null;
+
+    if (xmlOutputBuffer.dataOffset === null) {
+      throw new Error("Failed to allocate memory for output buffer");
+    }
+
+    htmlDocContentDumpFormatOutput(
+      xmlOutputBuffer.dataOffset,
+      this.dataOffset,
+      encodingPtr ?? NULL_POINTER,
+      options?.format ? 1 : 0,
+    );
+
+    if (encodingPtr !== null) {
+      free(encodingPtr);
+    }
+    return xmlOutputBuffer;
+  }
+
+  toHtmlString(options?: { format?: boolean; encoding?: Encoding }) {
+    const xmlOutputBuffer = this.toHtmlOutputBuffer(options);
+
+    const xmlString = xmlOutputBuffer.toString();
+    xmlOutputBuffer.delete();
+    return xmlString;
+  }
 }
+
+export { XmlDocument };

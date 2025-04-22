@@ -1,18 +1,26 @@
+import { NULL_POINTER } from "../constants";
 import { UTF8ToString } from "../internal/emscripten";
 import {
   xmlAllocOutputBuffer,
   xmlOutputBufferGetSize,
   xmlOutputBufferGetContent,
   xmlOutputBufferClose,
+  xmlCharEncoding,
 } from "../internal/libxml2";
 
 import { DataSegment } from "../utils/DataSegment";
 
-export class XmlOutputBuffer extends DataSegment {
-  static allocate() {
-    const bufferPtr = xmlAllocOutputBuffer(Number(null));
-    if (bufferPtr === 0) {
-      throw new ReferenceError("failed to allocate XML output buffer");
+class XmlOutputBuffer extends DataSegment {
+  /**
+   * Allocate a new XML output buffer (`xmlOutputBufferPtr`) and return the
+   * wrapper class
+   */
+  static allocate(encoding: keyof typeof xmlCharEncoding = "NONE") {
+    const bufferPtr = xmlAllocOutputBuffer(xmlCharEncoding[encoding].value);
+    if (bufferPtr === NULL_POINTER) {
+      throw new ReferenceError(
+        "Failed to allocate memory for XML output buffer",
+      );
     }
     return new XmlOutputBuffer(bufferPtr);
   }
@@ -25,7 +33,7 @@ export class XmlOutputBuffer extends DataSegment {
 
   toString() {
     if (this.dataOffset === null) {
-      throw new Error("Buffer already disposed");
+      throw new Error("XML output buffer already disposed");
     }
 
     const content = xmlOutputBufferGetContent(this.dataOffset);
@@ -36,7 +44,7 @@ export class XmlOutputBuffer extends DataSegment {
 
   delete() {
     if (this.dataOffset === null) {
-      throw new Error("Buffer already disposed");
+      throw new Error("XML output buffer already disposed");
     }
 
     const bytesWritten = xmlOutputBufferClose(this.dataOffset);
@@ -51,3 +59,5 @@ export class XmlOutputBuffer extends DataSegment {
     super.delete();
   }
 }
+
+export { XmlOutputBuffer };

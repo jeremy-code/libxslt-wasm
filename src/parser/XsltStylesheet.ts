@@ -3,28 +3,34 @@ import {
   xsltLoadStylesheetPI,
   xsltFreeStylesheet,
   xsltParseStylesheetDoc,
-} from "../internal/libxslt.ts";
+  xsltSaveResultTo,
+} from "../internal/libxslt";
 import { StringPtrArray } from "../utils/StringPtrArray";
-
+import { XmlOutputBuffer } from "./XmlOutputBuffer";
 import { XmlDocument } from "./XmlDocument";
+import { NULL_POINTER } from "../constants";
 
+// If you see errors when passing params, considering double quoting params so
+// they are considered literals rather than XPath expressions
 const parseXsltParams = (
   params: Record<string, string> | undefined,
 ): number => {
   if (params === undefined) {
-    return Number(null);
+    return NULL_POINTER;
   }
 
   const entries = Object.entries(params);
   if (entries.length === 0) {
-    return Number(null);
+    return NULL_POINTER;
   }
 
   const paramArray = entries
     .map(([key, value]) => [key, String(value)])
     .flat(1);
-  const stringPtrArray = StringPtrArray.fromStringArray(paramArray, true);
-  const paramsArrayPtr = stringPtrArray.dataOffset;
+  const paramsArrayPtr = StringPtrArray.fromStringArray(
+    paramArray,
+    true,
+  ).dataOffset;
 
   if (paramsArrayPtr === null) {
     throw new Error("Failed to allocate memory for XSLT parameters");
@@ -33,7 +39,7 @@ const parseXsltParams = (
   return paramsArrayPtr;
 };
 
-export class XsltStylesheet extends XmlDocument {
+class XsltStylesheet extends XmlDocument {
   static async fromXmlDocument(xmlDocument: XmlDocument) {
     if (xmlDocument.dataOffset === null) {
       throw new Error("XML document has already been disposed");
@@ -52,7 +58,7 @@ export class XsltStylesheet extends XmlDocument {
       xmlDocument.dataOffset,
     );
 
-    return xsltStylesheetPtr === 0
+    return xsltStylesheetPtr === NULL_POINTER
       ? null
       : new XsltStylesheet(xsltStylesheetPtr);
   }
@@ -65,6 +71,9 @@ export class XsltStylesheet extends XmlDocument {
     return this.fromXmlDocument(await super.fromString(string));
   }
 
+  // Since `xsltApplyStylesheet()` uses `xmlXPathCompOpEval()` internally for
+  // params, this must be async. Considering using `applyToOutputBuffer()` or
+  // `applyToString()` for synchronous operations
   async apply(xmlDocument: XmlDocument, params?: Record<string, string>) {
     if (this.dataOffset === null) {
       throw new Error("XSLT stylesheet has already been disposed");
@@ -77,10 +86,43 @@ export class XsltStylesheet extends XmlDocument {
       xmlDocument.dataOffset,
       parseXsltParams(params),
     );
-    if (result === 0) {
-      throw new Error("Failed to apply stylesheet");
+    if (result === NULL_POINTER) {
+      throw new Error("Failed to apply XSLT stylesheet to XML document");
     }
     return new XmlDocument(result);
+  }
+
+  applyToOutputBuffer(xmlDocument: XmlDocument) {
+    if (this.dataOffset === null) {
+      throw new Error("XSLT stylesheet has already been disposed");
+    } else if (xmlDocument.dataOffset === null) {
+      throw new Error("XML document has already been disposed");
+    }
+
+    const outputBuffer = XmlOutputBuffer.allocate();
+
+    if (outputBuffer.dataOffset === null) {
+      throw new Error("Failed to allocate memory for XML output buffer");
+    }
+
+    const bytesWritten = xsltSaveResultTo(
+      outputBuffer.dataOffset,
+      xmlDocument.dataOffset,
+      this.dataOffset,
+    );
+
+    if (bytesWritten === -1) {
+      throw new Error("Failed to save result to XML output buffer");
+    }
+
+    return outputBuffer;
+  }
+
+  applyToString(xmlDocument: XmlDocument) {
+    const outputBuffer = this.applyToOutputBuffer(xmlDocument);
+    const result = outputBuffer.toString();
+    outputBuffer.delete();
+    return result;
   }
 
   delete() {
@@ -88,6 +130,8 @@ export class XsltStylesheet extends XmlDocument {
       xsltFreeStylesheet(this.dataOffset);
     }
     this.dataOffset = null;
-    // Do NOT run `super.delete()` since xmlFreeDoc will be called
+    // Do NOT call `super.delete()` since `xmlFreeDoc()` will be called
   }
 }
+
+export { XsltStylesheet };

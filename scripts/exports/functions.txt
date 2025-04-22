@@ -4,6 +4,8 @@ _malloc
 # main.c
 _main
 # libxml
+## <libxml/HTMLtree.h>
+_htmlDocContentDumpFormatOutput
 ## <libxml/encoding.h>
 _xmlDetectCharEncoding
 ## <libxml/parser.h>
@@ -55,6 +57,7 @@ _xsltLoadStylesheetPI
 _xsltParseStylesheetDoc
 ## <libxslt/xsltutils.h>
 _xsltSaveResultToFile
+_xsltSaveResultTo
 # exslt
 _exsltCommonRegister
 _exsltDateRegister

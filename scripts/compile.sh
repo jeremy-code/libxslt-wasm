@@ -16,9 +16,7 @@ DEBUG_FLAGS=(
   -sGL_DEBUG=0        # enables more verbose debug printing of WebGL related operations
   -sWEBAUDIO_DEBUG=0  # enables deep debugging of Web Audio backend
   -sPTHREADS_DEBUG=1  # add in debug traces for diagnosing pthreads related issues
-  -sFETCH_DEBUG=1     # prints out debugging information in library_fetch.js
   -sRUNTIME_DEBUG=1   # if non-zero, add tracing to core runtime functions
-  -v                  # verbose output
 )
 
 # https://emscripten.org/docs/debugging/Sanitizers.html
@@ -37,15 +35,16 @@ emcc \
   $(pkg-config --libs --cflags libxml-2.0 libxslt libexslt) \
   ${DEBUG:+${DEBUG_FLAGS[@]}} \
   ${SANITIZE:+${SANITIZE_FLAGS[@]}} \
+  -O0 \
   -g2 \
-  -sJSPI=1 \
-  -sJSPI_EXPORTS=@${SOURCE_DIR}/scripts/exports/jspi.txt \
-  -sEXIT_RUNTIME=0 \
-  -sINVOKE_RUN=1 \
   -pthread \
   -lembind \
   --emit-tsd ${SOURCE_DIR}/dist/output/libxslt.d.ts \
+  -sINVOKE_RUN=1 \
+  -sEXIT_RUNTIME=0 \
   -sENVIRONMENT=node \
+  -sJSPI=1 \
+  -sJSPI_EXPORTS=@${SOURCE_DIR}/scripts/exports/jspi.txt \
   -sEXPORTED_RUNTIME_METHODS=@${SOURCE_DIR}/scripts/exports/runtime_methods.txt \
   -sFORCE_FILESYSTEM=1 \
   -sNODERAWFS=1 \

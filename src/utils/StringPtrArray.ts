@@ -1,21 +1,19 @@
-import {
-  getNativeTypeSize,
-  setValue,
-  stringToNewUTF8,
-} from "../internal/emscripten";
+import { setValue, stringToNewUTF8 } from "../internal/emscripten";
 import { malloc, free } from "../internal/main";
-
 import { DataSegment } from "./DataSegment";
+import { POINTER_SIZE, NULL_POINTER } from "../constants";
 
-// 4 bytes by default, 8 bytes if `MEMORY64` is enabled
-// https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
-const POINTER_SIZE = getNativeTypeSize("*");
-
-export class StringPtrArray extends DataSegment {
+/**
+ * An array of pointers to UTF-8 encoded strings or `.dataOffset` == `char**`
+ */
+class StringPtrArray extends DataSegment {
   stringPtrArray: number[] = [];
   isNullTerminated = false;
 
-  static fromStringArray(stringArray: string[], isNullTerminated = false) {
+  static fromStringArray(
+    stringArray: string[],
+    isNullTerminated = false,
+  ): StringPtrArray {
     if (stringArray.length === 0) {
       throw new Error("String array is empty");
     }
@@ -28,26 +26,32 @@ export class StringPtrArray extends DataSegment {
       stringPtrArray.length * POINTER_SIZE +
         (isNullTerminated ? POINTER_SIZE : 0),
     );
-
-    const stringPtrArrayInstance = new StringPtrArray(stringPtrArrayPtr);
-
-    stringPtrArrayInstance.stringPtrArray = stringPtrArray;
-    stringPtrArrayInstance.isNullTerminated = isNullTerminated;
-
     stringPtrArray.forEach((stringPtr, index) => {
       setValue(stringPtrArrayPtr + index * POINTER_SIZE, stringPtr, "*");
     });
 
-    // Not strictly necessary since `malloc` initializes the memory to zero
+    // Not strictly necessary since `malloc()` initializes the memory to zero
     if (isNullTerminated) {
       setValue(
         stringPtrArrayPtr + stringPtrArray.length * POINTER_SIZE,
-        0,
+        NULL_POINTER,
         "*",
       );
+      // Note, null pointer is NOT added to `stringPtrArray`
     }
 
-    return stringPtrArrayInstance;
+    return Object.assign(new StringPtrArray(stringPtrArrayPtr), {
+      stringPtrArray: stringPtrArray,
+      isNullTerminated: isNullTerminated,
+    });
+  }
+
+  // Aligns with `TypedArray` API
+  get byteLength() {
+    return (
+      this.stringPtrArray.length * POINTER_SIZE +
+      (this.isNullTerminated ? POINTER_SIZE : 0)
+    );
   }
 
   delete() {
@@ -60,3 +64,5 @@ export class StringPtrArray extends DataSegment {
     super.delete();
   }
 }
+
+export { StringPtrArray };

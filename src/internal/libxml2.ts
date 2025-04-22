@@ -1,6 +1,9 @@
 import { libxslt } from "./module";
 
 export const {
+  // <libxml/HTMLtree.h>
+  _htmlDocContentDumpFormatOutput: htmlDocContentDumpFormatOutput,
+
   // <libxml/encoding.h>
   _xmlDetectCharEncoding: xmlDetectCharEncoding,
 
@@ -41,3 +44,5 @@ export const {
   // <libxml/string.h>
   _xmlCharStrdup: xmlCharStrdup,
 } = libxslt;
+
+export const { xmlCharEncoding } = libxslt;

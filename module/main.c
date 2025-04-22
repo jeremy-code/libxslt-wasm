@@ -1,13 +1,8 @@
 #include <string.h>
 #include <emscripten.h>
-#include <emscripten/emscripten.h>
-#include <emscripten/fetch.h>
-#include <emscripten/proxying.h>
-#include <emscripten/threading.h>
 #include <libxml/parser.h>
 #include <libxml/uri.h>
 #include <libxslt/xsltutils.h>
-#include <pthread.h>
 
 EM_ASYNC_JS(void, fetchBytes, (const char *url, void **pbuffer, int *pnum, int *perror), {
   const response = await fetch(UTF8ToString(url), {

@@ -16,6 +16,7 @@ export const {
   _xsltParseStylesheetDoc: xsltParseStylesheetDoc,
   // <libxslt/xsltutils.h>
   _xsltSaveResultToFile: xsltSaveResultToFile,
+  _xsltSaveResultTo: xsltSaveResultTo,
   // exslt
   _exsltCommonRegister: exsltCommonRegister,
   _exsltDateRegister: exsltDateRegister,

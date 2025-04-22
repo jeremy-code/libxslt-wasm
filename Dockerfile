@@ -12,7 +12,7 @@ WORKDIR /src
 COPY . .
 
 # TODO: Find better way to remove package.json since Node.js errors when it
-# attempts to require() packages
+# attempts to `require()` packages with a package.json with type "module"
 RUN \
   . /emsdk/emsdk_env.sh \
   && rm -f ./package.json \
@@ -26,6 +26,7 @@ RUN cd libxml2 \
     --without-push \
     --without-reader \
     --without-python \
+    --with-threads \
   && emmake make install \
   && cd ..
 
@@ -35,8 +36,5 @@ RUN cd libxslt \
     --disable-shared \
     --enable-static \
     --without-python \
-    XML_CONFIG=/src/libxml2/xml2-config \
-    CFLAGS="$(pkg-config --cflags libxml-2.0)" \
-    LDFLAGS="$(pkg-config --libs  libxml-2.0)" \
   && emmake make install \
   && cd ..

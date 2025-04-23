@@ -44,11 +44,11 @@ i.e. if all the aforementioned libraries can't transform your XML but the `xsltp
 
 ```ts
 import { writeFile } from "fs/promises";
-import { XmlDocument, XsltStylesheet } from "libxslt-wasm";
-import { exsltRegisterAll, xsltRegisterAllExtras } from "libxslt-wasm/internal";
 
-xsltRegisterAllExtras();
-exsltRegisterAll();
+import { XmlDocument, XsltStylesheet } from "libxslt-wasm";
+import { registerModule } from "libxslt-wasm/exslt";
+
+registerModule("common"); // Register EXSLT common module
 
 using doc: XmlDocument = await XmlDocument.fromFileOrUrl(
   "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/2b4255a7-f9f5-4235-8dbb-b0f03acbd624.xml",

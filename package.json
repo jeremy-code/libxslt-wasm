@@ -1,6 +1,6 @@
 {
   "name": "libxslt-wasm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "type": "module",
   "scripts": {
@@ -25,13 +25,17 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./interfaces": {
-      "types": "./dist/interfaces.d.ts",
-      "default": "./dist/interfaces.js"
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
     },
-    "./parser/*": {
-      "types": "./dist/parser/*",
-      "default": "./dist/parser/*"
+    "./exslt": {
+      "types": "./dist/exslt/index.d.ts",
+      "default": "./dist/exslt/index.js"
+    },
+    "./exslt/*": {
+      "types": "./dist/exslt/*.d.ts",
+      "default": "./dist/exslt/*"
     },
     "./internal": {
       "types": "./dist/internal/index.d.ts",
@@ -41,18 +45,21 @@
       "types": "./dist/internal/*.d.ts",
       "default": "./dist/internal/*"
     },
+    "./parser/*": {
+      "types": "./dist/parser/*",
+      "default": "./dist/parser/*"
+    },
     "./output/libxslt": {
       "types": "./dist/output/libxslt.d.ts",
       "default": "./dist/output/libxslt.js"
     },
-    "./output/libxsltWasm": "./dist/output/libxslt.wasm"
+    "./output/libxslt.wasm": "./dist/output/libxslt.wasm"
   },
   "imports": {
     "#libxslt": {
       "types": "./dist/output/libxslt.d.ts",
       "default": "./dist/output/libxslt.js"
-    },
-    "#libxsltWasm": "./dist/output/libxslt.wasm"
+    }
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",

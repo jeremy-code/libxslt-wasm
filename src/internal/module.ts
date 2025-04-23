@@ -1,5 +1,5 @@
-import createLibxsltModule from "#libxslt";
+import libxsltFactory from "#libxslt";
 
-const libxslt = await createLibxsltModule();
+const libxslt = await libxsltFactory();
 
-export { createLibxsltModule, libxslt };
+export { libxsltFactory, libxslt };

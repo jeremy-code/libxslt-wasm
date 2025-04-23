@@ -24,6 +24,9 @@ class XmlOutputBuffer extends DataSegment {
     return new XmlOutputBuffer(bufferPtr);
   }
 
+  /**
+   * Returns length of the data currently held in the output buffer
+   */
   get size() {
     return this.dataOffset !== null ?
         xmlOutputBufferGetSize(this.dataOffset)
@@ -49,6 +52,7 @@ class XmlOutputBuffer extends DataSegment {
     const bytesWritten = xmlOutputBufferClose(this.dataOffset);
 
     if (bytesWritten < 0) {
+      // bytesWritten is negative of enum `xmlParserErrors`
       throw new Error(
         `XML Parser Errors ${Math.abs(
           bytesWritten,

@@ -12,6 +12,9 @@ import {
 import { free } from "../internal/main";
 import { DataSegment } from "../utils/DataSegment";
 
+/**
+ * A wrapper class for `xmlDocPtr` in libxml2
+ */
 class XmlDocument extends DataSegment {
   static async fromFileOrUrl(
     fileOrUrl: string,
@@ -52,6 +55,10 @@ class XmlDocument extends DataSegment {
     super.delete();
   }
 
+  /**
+   * Formats the XML document as a string by dumping the XML tree to an
+   * {@link XmlOutputBuffer} and returning its string representation.
+   */
   toString(options?: { format?: boolean; encoding?: Encoding }) {
     if (this.dataOffset === null) {
       throw new Error("XML document has already been disposed");
@@ -90,6 +97,10 @@ class XmlDocument extends DataSegment {
     return xmlString;
   }
 
+  /**
+   * Assuming the document is an HTML tree, dumps the document to an
+   * {@link XmlOutputBuffer} and returns the output buffer
+   */
   toHtmlOutputBuffer(options?: { format?: boolean; encoding?: Encoding }) {
     if (this.dataOffset === null) {
       throw new Error("XML document has already been disposed");
@@ -115,6 +126,10 @@ class XmlDocument extends DataSegment {
     return xmlOutputBuffer;
   }
 
+  /**
+   * Assuming the document is an HTML tree, serializes the document via
+   * {@link toHtmlOutputBuffer} and returns the string
+   */
   toHtmlString(options?: { format?: boolean; encoding?: Encoding }) {
     const xmlOutputBuffer = this.toHtmlOutputBuffer(options);
 

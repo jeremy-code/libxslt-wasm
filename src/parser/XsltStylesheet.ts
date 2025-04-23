@@ -40,6 +40,10 @@ const parseXsltParams = (
 };
 
 class XsltStylesheet extends XmlDocument {
+  /**
+   * Assuming the XML document is a valid XSLT stylesheet, creates a new
+   * instance of XsltStylesheet
+   */
   static async fromXmlDocument(xmlDocument: XmlDocument) {
     if (xmlDocument.dataOffset === null) {
       throw new Error("XML document has already been disposed");
@@ -49,6 +53,11 @@ class XsltStylesheet extends XmlDocument {
     return new XsltStylesheet(xsltStylesheet);
   }
 
+  /**
+   * Given an XML document with an embedded XSLT stylesheet (e.g. a processing
+   * instruction like <?xml-stylesheet?>), return the corresponding
+   * XsltStylesheet instance
+   */
   static async fromEmbeddedXmlDocument(xmlDocument: XmlDocument) {
     if (xmlDocument.dataOffset === null) {
       throw new Error("XML document has already been disposed");

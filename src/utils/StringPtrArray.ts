@@ -4,7 +4,8 @@ import { setValue, stringToNewUTF8 } from "../internal/emscripten";
 import { malloc, free } from "../internal/main";
 
 /**
- * An array of pointers to UTF-8 encoded strings or `.dataOffset` == `char**`
+ * An array of pointers to UTF-8 encoded strings or `.dataOffset` == `char**`.
+ * May be null terminated
  */
 class StringPtrArray extends DataSegment {
   stringPtrArray: number[] = [];

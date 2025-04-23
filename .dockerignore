@@ -1,0 +1,5 @@
+**/*
+!libxml2/
+!libxslt/
+!module/
+!scripts/

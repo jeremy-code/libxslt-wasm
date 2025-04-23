@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
-# Run with DEBUG=1 or SANITIZE=1 to enable debugging or sanitizers
+# Run with DEBUG=1 or SANITIZE=1 to enable debugging or sanitizers.
+# This script can be ran locally or in a Docker container.
 
 # https://emscripten.org/docs/tools_reference/settings_reference.html
 DEBUG_FLAGS=(
@@ -31,8 +32,14 @@ SANITIZE_FLAGS=(
 SCRIPT_DIR="$(dirname "$0")"
 SOURCE_DIR=$(realpath "${SCRIPT_DIR}/..")
 
+PKG_CONFIG_PC_FILES=(
+  $SOURCE_DIR/libxml2/libxml-2.0.pc
+  $SOURCE_DIR/libxslt/libxslt.pc
+  $SOURCE_DIR/libxslt/libexslt.pc
+)
+
 emcc \
-  $(pkg-config --libs --cflags libxml-2.0 libxslt libexslt) \
+  $(pkg-config --cflags --libs ${PKG_CONFIG_PC_FILES[@]}) \
   ${DEBUG:+${DEBUG_FLAGS[@]}} \
   ${SANITIZE:+${SANITIZE_FLAGS[@]}} \
   -O0 \
@@ -56,4 +63,5 @@ emcc \
   ${SOURCE_DIR}/module/main.c \
   ${SOURCE_DIR}/module/enum.cpp \
   ${SOURCE_DIR}/libxml2/.libs/libxml2.a \
-  ${SOURCE_DIR}/libxslt/libxslt/.libs/libxslt.a
+  ${SOURCE_DIR}/libxslt/libxslt/.libs/libxslt.a \
+  ${SOURCE_DIR}/libxslt/libexslt/.libs/libexslt.a

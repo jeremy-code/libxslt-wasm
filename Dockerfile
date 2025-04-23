@@ -5,36 +5,39 @@ RUN apt-get update \
     autoconf \
     automake \
     libtool \
-    pkg-config
+    pkg-config \
+  && npm install --global typescript
 
-WORKDIR /src
+# By default, the emscripten (1000:1000) user is installed in the image
+USER emscripten
 
-COPY . .
-
-# TODO: Find better way to remove package.json since Node.js errors when it
-# attempts to `require()` packages with a package.json with type "module"
-RUN \
-  . /emsdk/emsdk_env.sh \
-  && rm -f ./package.json \
-  && npm install -g typescript
+WORKDIR /home/emscripten
+COPY --chown=emscripten:emscripten . .
 
 RUN cd libxml2 \
   && autoreconf --force --install --warnings=all \
   && emconfigure ./configure \
-    --disable-shared \
+    --prefix="${HOME}/local" \
     --enable-static \
+    --disable-shared \
     --without-push \
     --without-reader \
     --without-python \
     --with-threads \
+  && emmake make \
   && emmake make install \
   && cd ..
 
 RUN cd libxslt \
   && autoreconf --force --install --warnings=all \
   && emconfigure ./configure \
-    --disable-shared \
+    --prefix="${HOME}/local" \
     --enable-static \
+    --disable-shared \
     --without-python \
+    --with-libxml-prefix="${HOME}/local" \
+  && emmake make \
   && emmake make install \
   && cd ..
+
+ENTRYPOINT ["/bin/bash"]

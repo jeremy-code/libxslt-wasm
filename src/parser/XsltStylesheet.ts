@@ -1,14 +1,14 @@
-import { XmlDocument } from "./XmlDocument";
-import { XmlOutputBuffer } from "./XmlOutputBuffer";
-import { NULL_POINTER } from "../constants";
+import { XmlDocument } from "./XmlDocument.ts";
+import { XmlOutputBuffer } from "./XmlOutputBuffer.ts";
+import { NULL_POINTER } from "../constants.ts";
 import {
   xsltApplyStylesheet,
   xsltLoadStylesheetPI,
   xsltFreeStylesheet,
   xsltParseStylesheetDoc,
   xsltSaveResultTo,
-} from "../internal/libxslt";
-import { StringPtrArray } from "../utils/StringPtrArray";
+} from "../internal/libxslt.ts";
+import { StringPtrArray } from "../utils/StringPtrArray.ts";
 
 // If you see errors when passing params, considering double quoting params so
 // they are considered literals rather than XPath expressions
@@ -72,11 +72,11 @@ class XsltStylesheet extends XmlDocument {
       );
   }
 
-  static async fromFileOrUrl(fileOrUrl: string) {
+  static override async fromFileOrUrl(fileOrUrl: string) {
     return this.fromXmlDocument(await super.fromFileOrUrl(fileOrUrl));
   }
 
-  static async fromString(string: string) {
+  static override async fromString(string: string) {
     return this.fromXmlDocument(await super.fromString(string));
   }
 
@@ -134,7 +134,7 @@ class XsltStylesheet extends XmlDocument {
     return result;
   }
 
-  delete() {
+  override delete() {
     if (this.dataOffset !== null) {
       xsltFreeStylesheet(this.dataOffset);
     }

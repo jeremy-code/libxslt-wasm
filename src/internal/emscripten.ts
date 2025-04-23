@@ -1,4 +1,4 @@
-import { libxslt } from "./module";
+import { libxslt } from "./module.ts";
 
 export const {
   // Call compiled C functions. I avoid using these since I prefer having typing

@@ -1,4 +1,4 @@
-import { getNativeTypeSize } from "./internal";
+import { getNativeTypeSize } from "./internal/emscripten.ts";
 
 // 4 bytes by default, 8 bytes if `MEMORY64` is enabled
 // https://emscripten.org/docs/tools_reference/settings_reference.html#memory64

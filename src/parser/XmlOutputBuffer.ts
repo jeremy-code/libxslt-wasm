@@ -1,13 +1,13 @@
-import { NULL_POINTER } from "../constants";
-import { UTF8ToString } from "../internal/emscripten";
+import { NULL_POINTER } from "../constants.ts";
+import { UTF8ToString } from "../internal/emscripten.ts";
 import {
   xmlAllocOutputBuffer,
   xmlOutputBufferGetSize,
   xmlOutputBufferGetContent,
   xmlOutputBufferClose,
   xmlCharEncoding,
-} from "../internal/libxml2";
-import { DataSegment } from "../utils/DataSegment";
+} from "../internal/libxml2.ts";
+import { DataSegment } from "../utils/DataSegment.ts";
 
 class XmlOutputBuffer extends DataSegment {
   /**
@@ -33,7 +33,7 @@ class XmlOutputBuffer extends DataSegment {
       : 0;
   }
 
-  toString() {
+  override toString() {
     if (this.dataOffset === null) {
       throw new Error("XML output buffer already disposed");
     }
@@ -44,7 +44,7 @@ class XmlOutputBuffer extends DataSegment {
     return outputString;
   }
 
-  delete() {
+  override delete() {
     if (this.dataOffset === null) {
       throw new Error("XML output buffer already disposed");
     }

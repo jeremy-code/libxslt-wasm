@@ -1,4 +1,4 @@
-import { libxslt } from "./module";
+import { libxslt } from "./module.ts";
 
 export const {
   // <libxml/HTMLtree.h>

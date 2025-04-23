@@ -4,25 +4,32 @@
 
     /* Language and Environment */
     "target": "ES2024",
+    "lib": ["ES2024"],
     "moduleDetection": "force",
 
     /* Modules */
-    "module": "Preserve",
-    "rootDir": "./src",
+    "module": "NodeNext",
+    "rootDir": "src/",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "resolvePackageJsonExports": true,
+    "resolvePackageJsonImports": true,
 
     /* Emit */
     "declaration": true,
     "outDir": "dist",
 
     /* Interop Constraints */
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
 
     /* Type Checking */
     "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
 
     /* Completeness */
-    "skipLibCheck": true,
-    "rewriteRelativeImportExtensions": true
+    "skipLibCheck": true
   }
 }

@@ -1,4 +1,4 @@
-import { NULL_POINTER } from "../constants";
+import { NULL_POINTER } from "../constants.ts";
 
 class DataSegment implements Disposable {
   dataOffset: number | null;

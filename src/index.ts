@@ -1,4 +1,4 @@
-import { XmlDocument } from "./parser/XmlDocument";
-import { XsltStylesheet } from "./parser/XsltStylesheet";
+import { XmlDocument } from "./parser/XmlDocument.ts";
+import { XsltStylesheet } from "./parser/XsltStylesheet.ts";
 
 export { XmlDocument, XsltStylesheet };

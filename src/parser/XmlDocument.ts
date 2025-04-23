@@ -1,16 +1,16 @@
-import { XmlOutputBuffer } from "./XmlOutputBuffer";
-import { NULL_POINTER } from "../constants";
-import type { Encoding } from "../interfaces";
-import { stringToNewUTF8 } from "../internal/emscripten";
+import { XmlOutputBuffer } from "./XmlOutputBuffer.ts";
+import { NULL_POINTER } from "../constants.ts";
+import type { Encoding } from "../interfaces.ts";
+import { stringToNewUTF8 } from "../internal/emscripten.ts";
 import {
   xmlReadFile,
   xmlReadDoc,
   xmlNodeDumpOutput,
   xmlFreeDoc,
   htmlDocContentDumpFormatOutput,
-} from "../internal/libxml2";
-import { free } from "../internal/main";
-import { DataSegment } from "../utils/DataSegment";
+} from "../internal/libxml2.ts";
+import { free } from "../internal/main.ts";
+import { DataSegment } from "../utils/DataSegment.ts";
 
 /**
  * A wrapper class for `xmlDocPtr` in libxml2
@@ -48,7 +48,7 @@ class XmlDocument extends DataSegment {
     return xmlDocument;
   }
 
-  delete() {
+  override delete() {
     if (this.dataOffset !== null) {
       xmlFreeDoc(this.dataOffset);
     }
@@ -59,7 +59,7 @@ class XmlDocument extends DataSegment {
    * Formats the XML document as a string by dumping the XML tree to an
    * {@link XmlOutputBuffer} and returning its string representation.
    */
-  toString(options?: { format?: boolean; encoding?: Encoding }) {
+  override toString(options?: { format?: boolean; encoding?: Encoding }) {
     if (this.dataOffset === null) {
       throw new Error("XML document has already been disposed");
     }
@@ -77,7 +77,7 @@ class XmlDocument extends DataSegment {
      * `cur`. While this usage may be suspect, this technique is used for for
      * `htmlDocContentDumpOutput`.
      *
-     * @see {@link https://github.com/GNOME/libxml2/blob/master/HTMLtree.c#L938-L942}
+     * @see {@link https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/HTMLtree.c#L938-942}
      */
     xmlNodeDumpOutput(
       xmlOutputBuffer.dataOffset,

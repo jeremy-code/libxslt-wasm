@@ -4,11 +4,15 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "start": "tsx src/index.ts",
-    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
     "compile": "./scripts/compile.sh",
     "docker:build": "./scripts/build.sh",
-    "docker:run": "./scripts/run.sh"
+    "docker:run": "./scripts/run.sh",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "keywords": [],
   "author": "Jeremy Nguyen <nguyen.jeremyt@gmail.com> (https://jeremy.ng)",
@@ -51,9 +55,15 @@
     "#libxsltWasm": "./dist/output/libxslt.wasm"
   },
   "devDependencies": {
+    "@eslint/js": "^9.25.1",
     "@types/node": "^22.14.1",
+    "eslint": "^9.25.1",
+    "eslint-import-resolver-typescript": "^4.3.4",
+    "eslint-plugin-import-x": "^4.10.6",
+    "prettier": "^3.5.3",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.31.0"
   },
   "packageManager": "pnpm@10.8.1+sha512.c50088ba998c67b8ca8c99df8a5e02fd2ae2e2b29aaf238feaa9e124248d3f48f9fb6db2424949ff901cffbb5e0f0cc1ad6aedb602cd29450751d11c35023677"
 }

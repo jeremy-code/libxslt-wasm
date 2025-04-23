@@ -7,7 +7,6 @@ import {
   xmlOutputBufferClose,
   xmlCharEncoding,
 } from "../internal/libxml2";
-
 import { DataSegment } from "../utils/DataSegment";
 
 class XmlOutputBuffer extends DataSegment {
@@ -26,8 +25,8 @@ class XmlOutputBuffer extends DataSegment {
   }
 
   get size() {
-    return this.dataOffset !== null
-      ? xmlOutputBufferGetSize(this.dataOffset)
+    return this.dataOffset !== null ?
+        xmlOutputBufferGetSize(this.dataOffset)
       : 0;
   }
 

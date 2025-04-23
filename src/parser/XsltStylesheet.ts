@@ -1,3 +1,6 @@
+import { XmlDocument } from "./XmlDocument";
+import { XmlOutputBuffer } from "./XmlOutputBuffer";
+import { NULL_POINTER } from "../constants";
 import {
   xsltApplyStylesheet,
   xsltLoadStylesheetPI,
@@ -6,9 +9,6 @@ import {
   xsltSaveResultTo,
 } from "../internal/libxslt";
 import { StringPtrArray } from "../utils/StringPtrArray";
-import { XmlOutputBuffer } from "./XmlOutputBuffer";
-import { XmlDocument } from "./XmlDocument";
-import { NULL_POINTER } from "../constants";
 
 // If you see errors when passing params, considering double quoting params so
 // they are considered literals rather than XPath expressions
@@ -58,9 +58,9 @@ class XsltStylesheet extends XmlDocument {
       xmlDocument.dataOffset,
     );
 
-    return xsltStylesheetPtr === NULL_POINTER
-      ? null
-      : new XsltStylesheet(xsltStylesheetPtr);
+    return xsltStylesheetPtr === NULL_POINTER ? null : (
+        new XsltStylesheet(xsltStylesheetPtr)
+      );
   }
 
   static async fromFileOrUrl(fileOrUrl: string) {
@@ -72,7 +72,7 @@ class XsltStylesheet extends XmlDocument {
   }
 
   // Since `xsltApplyStylesheet()` uses `xmlXPathCompOpEval()` internally for
-  // params, this must be async. Considering using `applyToOutputBuffer()` or
+  // params, this must be async. Consider using `applyToOutputBuffer()` or
   // `applyToString()` for synchronous operations
   async apply(xmlDocument: XmlDocument, params?: Record<string, string>) {
     if (this.dataOffset === null) {

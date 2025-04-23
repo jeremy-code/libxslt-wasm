@@ -53,8 +53,9 @@ exsltRegisterAll();
 using doc: XmlDocument = await XmlDocument.fromFileOrUrl(
   "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/2b4255a7-f9f5-4235-8dbb-b0f03acbd624.xml",
 );
-// Equivalent to `await XsltStylesheet.fromFileOrUrl("https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl");` since the <?xml-stylesheet> processing instruction is supported
-using xsltStylesheet: XsltStylesheet | null = await XsltStylesheet.fromEmbeddedXmlDocument(doc);
+// Equivalent to `await XsltStylesheet.fromFileOrUrl("https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl");`
+using xsltStylesheet: XsltStylesheet | null =
+  await XsltStylesheet.fromEmbeddedXmlDocument(doc); // From <?xml-stylesheet> processing instruction
 
 if (xsltStylesheet === null) {
   throw new Error("Invalid XSLT stylesheet");

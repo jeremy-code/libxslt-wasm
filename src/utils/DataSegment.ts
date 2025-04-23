@@ -46,7 +46,7 @@ class DataSegment implements Disposable {
    * @see {@link https://github.com/tc39/proposal-explicit-resource-management}
    * @see {@link https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html#using-declarations-and-explicit-resource-management}
    */
-  [Symbol.dispose]() {
+  [Symbol.dispose](): void {
     this.delete();
   }
 }

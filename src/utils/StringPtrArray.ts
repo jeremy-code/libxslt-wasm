@@ -1,7 +1,7 @@
-import { setValue, stringToNewUTF8 } from "../internal/emscripten";
-import { malloc, free } from "../internal/main";
 import { DataSegment } from "./DataSegment";
 import { POINTER_SIZE, NULL_POINTER } from "../constants";
+import { setValue, stringToNewUTF8 } from "../internal/emscripten";
+import { malloc, free } from "../internal/main";
 
 /**
  * An array of pointers to UTF-8 encoded strings or `.dataOffset` == `char**`

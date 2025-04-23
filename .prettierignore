@@ -1,0 +1,6 @@
+# Build Outputs
+dist/
+
+# Submodulesi
+libxml2/
+libxslt/

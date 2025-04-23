@@ -1,3 +1,6 @@
+import { XmlOutputBuffer } from "./XmlOutputBuffer";
+import { NULL_POINTER } from "../constants";
+import type { Encoding } from "../interfaces";
 import { stringToNewUTF8 } from "../internal/emscripten";
 import {
   xmlReadFile,
@@ -6,20 +9,16 @@ import {
   xmlFreeDoc,
   htmlDocContentDumpFormatOutput,
 } from "../internal/libxml2";
-import { XmlOutputBuffer } from "./XmlOutputBuffer";
-import { DataSegment } from "../utils/DataSegment";
-import type { Encoding } from "../interfaces";
 import { free } from "../internal/main";
-import { NULL_POINTER } from "../constants";
+import { DataSegment } from "../utils/DataSegment";
 
 class XmlDocument extends DataSegment {
   static async fromFileOrUrl(
     fileOrUrl: string,
     encoding: Encoding | null = null,
   ) {
-    const encodingPtr: number | null = encoding
-      ? stringToNewUTF8(encoding)
-      : null;
+    const encodingPtr: number | null =
+      encoding ? stringToNewUTF8(encoding) : null;
     const fileOrUrlPtr = stringToNewUTF8(fileOrUrl);
     const xmlDocument = new XmlDocument(
       await xmlReadFile(
@@ -59,9 +58,8 @@ class XmlDocument extends DataSegment {
     }
 
     const xmlOutputBuffer = XmlOutputBuffer.allocate();
-    const encodingPtr = options?.encoding
-      ? stringToNewUTF8(options.encoding)
-      : null;
+    const encodingPtr =
+      options?.encoding ? stringToNewUTF8(options.encoding) : null;
 
     if (xmlOutputBuffer.dataOffset === null) {
       throw new Error("Failed to allocate memory for XML output buffer");
@@ -97,9 +95,8 @@ class XmlDocument extends DataSegment {
       throw new Error("XML document has already been disposed");
     }
     const xmlOutputBuffer = XmlOutputBuffer.allocate();
-    const encodingPtr = options?.encoding
-      ? stringToNewUTF8(options.encoding)
-      : null;
+    const encodingPtr =
+      options?.encoding ? stringToNewUTF8(options.encoding) : null;
 
     if (xmlOutputBuffer.dataOffset === null) {
       throw new Error("Failed to allocate memory for output buffer");

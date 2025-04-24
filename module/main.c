@@ -20,7 +20,6 @@ EM_ASYNC_JS(void, fetchBytes, (const char *url, void **pbuffer, int *pnum, int *
     const responseBytes = await response.bytes();
     const bufferToFill =
         _malloc(responseBytes.length * responseBytes.BYTES_PER_ELEMENT);
-    // In future (WASM 2.0), use mass memory copy
     HEAPU8.set(responseBytes, bufferToFill);
     setValue(pnum, responseBytes.length, "i32");
     setValue(perror, 0, "i32");

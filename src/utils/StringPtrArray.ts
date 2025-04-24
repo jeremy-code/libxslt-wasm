@@ -16,7 +16,9 @@ class StringPtrArray extends DataSegment {
     isNullTerminated = false,
   ): StringPtrArray {
     if (stringArray.length === 0) {
-      throw new Error("String array is empty");
+      throw new Error(
+        "StringPtrArray.fromStringArray array must have a length",
+      );
     }
 
     const stringPtrArray = stringArray.map((str): number =>
@@ -62,6 +64,7 @@ class StringPtrArray extends DataSegment {
     if (this.dataOffset !== null) {
       free(this.dataOffset);
     }
+    this.stringPtrArray = [];
     super.delete();
   }
 }

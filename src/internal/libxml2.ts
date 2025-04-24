@@ -40,6 +40,7 @@ export const {
   _xmlOutputBufferCreateFilename: xmlOutputBufferCreateFilename,
   _xmlOutputBufferGetContent: xmlOutputBufferGetContent,
   _xmlOutputBufferGetSize: xmlOutputBufferGetSize,
+  _xmlOutputBufferWrite: xmlOutputBufferWrite,
 
   // <libxml/string.h>
   _xmlCharStrdup: xmlCharStrdup,

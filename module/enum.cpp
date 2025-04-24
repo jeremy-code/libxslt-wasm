@@ -1,13 +1,14 @@
+#include <libxml/encoding.h>
 #include <libxml/parser.h>
 
 #include <emscripten/bind.h>
 
 using namespace emscripten;
 
-class NOOP {};
+class NOOP {}; // See https://github.com/emscripten-core/emscripten/issues/24120
 
 EMSCRIPTEN_BINDINGS(Foo) {
-    // encoding
+    // <libxml/encoding.h>
     enum_<xmlCharEncoding>("xmlCharEncoding")
         .value("ERROR", XML_CHAR_ENCODING_ERROR)
         .value("NONE", XML_CHAR_ENCODING_NONE)
@@ -42,9 +43,39 @@ EMSCRIPTEN_BINDINGS(Foo) {
         .value("ISO_8859_15", XML_CHAR_ENCODING_8859_15)
         .value("ISO_8859_16", XML_CHAR_ENCODING_8859_16)
         ;
+    // <libxml/parser.h>
+    enum_<xmlParserOption>("xmlParserOption")
+        .value("RECOVER", XML_PARSE_RECOVER)
+        .value("NOENT", XML_PARSE_NOENT)
+        .value("DTDLOAD", XML_PARSE_DTDLOAD)
+        .value("DTDATTR", XML_PARSE_DTDATTR)
+        .value("DTDVALID", XML_PARSE_DTDVALID)
+        .value("NOERROR", XML_PARSE_NOERROR)
+        .value("NOWARNING", XML_PARSE_NOWARNING)
+        .value("PEDANTIC", XML_PARSE_PEDANTIC)
+        .value("NOBLANKS", XML_PARSE_NOBLANKS)
+        .value("SAX1", XML_PARSE_SAX1)
+        .value("XINCLUDE", XML_PARSE_XINCLUDE)
+        .value("NONET", XML_PARSE_NONET)
+        .value("NODICT", XML_PARSE_NODICT)
+        .value("NSCLEAN", XML_PARSE_NSCLEAN)
+        .value("NOCDATA", XML_PARSE_NOCDATA)
+        .value("NOXINCNODE", XML_PARSE_NOXINCNODE)
+        .value("COMPACT", XML_PARSE_COMPACT)
+        .value("OLD10", XML_PARSE_OLD10)
+        .value("NOBASEFIX", XML_PARSE_NOBASEFIX)
+        .value("HUGE", XML_PARSE_HUGE)
+        .value("OLDSAX", XML_PARSE_OLDSAX)
+        .value("IGNORE_ENC", XML_PARSE_IGNORE_ENC)
+        .value("BIG_LINES", XML_PARSE_BIG_LINES)
+        .value("NO_XXE", XML_PARSE_NO_XXE)
+        .value("UNZIP", XML_PARSE_UNZIP)
+        .value("NO_SYS_CATALOG", XML_PARSE_NO_SYS_CATALOG)
+        .value("CATALOG_PI", XML_PARSE_CATALOG_PI)
+        ;
     enum_<xmlParserStatus>("xmlParserStatus")
         .value("NOT_WELL_FORMED", XML_STATUS_NOT_WELL_FORMED)
-        .value("NS_WELL_FORMED", XML_STATUS_NOT_NS_WELL_FORMED)
+        .value("NOT_NS_WELL_FORMED", XML_STATUS_NOT_NS_WELL_FORMED)
         .value("DTD_VALIDATION_FAILED", XML_STATUS_DTD_VALIDATION_FAILED)
         .value("CATASTROPHIC_ERROR", XML_STATUS_CATASTROPHIC_ERROR)
         ;

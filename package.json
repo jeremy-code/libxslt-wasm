@@ -1,12 +1,14 @@
 {
   "name": "libxslt-wasm",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "description": "JavaScript bindings for libxslt compiled to WebAssembly",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc",
     "compile": "./scripts/compile.sh",
+    "test": "node --experimental-wasm-jspi --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --run test -- --watch",
     "docker:build": "./scripts/build.sh",
     "docker:run": "./scripts/run.sh",
     "lint": "eslint",
@@ -44,11 +46,19 @@
       "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     },
+    "./*.js": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    },
     "./exslt": {
       "types": "./dist/exslt/index.d.ts",
       "default": "./dist/exslt/index.js"
     },
     "./exslt/*": {
+      "types": "./dist/exslt/*.d.ts",
+      "default": "./dist/exslt/*.js"
+    },
+    "./exslt/*.js": {
       "types": "./dist/exslt/*.d.ts",
       "default": "./dist/exslt/*.js"
     },
@@ -60,11 +70,23 @@
       "types": "./dist/internal/*.d.ts",
       "default": "./dist/internal/*.js"
     },
+    "./internal/*.js": {
+      "types": "./dist/internal/*.d.ts",
+      "default": "./dist/internal/*.js"
+    },
     "./parser/*": {
       "types": "./dist/parser/*.d.ts",
       "default": "./dist/parser/*.js"
     },
+    "./parser/*.js": {
+      "types": "./dist/parser/*.d.ts",
+      "default": "./dist/parser/*.js"
+    },
     "./output/libxslt": {
+      "types": "./dist/output/libxslt.d.ts",
+      "default": "./dist/output/libxslt.js"
+    },
+    "./output/libxslt.js": {
       "types": "./dist/output/libxslt.d.ts",
       "default": "./dist/output/libxslt.js"
     },
@@ -78,11 +100,16 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
+    "@jest/globals": "^29.7.0",
     "@types/node": "^22.14.1",
     "eslint": "^9.25.1",
     "eslint-import-resolver-typescript": "^4.3.4",
     "eslint-plugin-import-x": "^4.10.6",
+    "eslint-plugin-jest": "^28.11.0",
+    "jest": "^29.7.0",
+    "jest-config": "^29.7.0",
     "prettier": "^3.5.3",
+    "ts-jest": "^29.3.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.0"
   },

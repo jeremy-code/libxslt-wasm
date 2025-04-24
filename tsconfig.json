@@ -10,7 +10,6 @@
     /* Modules */
     "module": "NodeNext",
     "rootDir": "src/",
-    "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,
     "resolvePackageJsonExports": true,
     "resolvePackageJsonImports": true,
@@ -31,5 +30,7 @@
 
     /* Completeness */
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts"]
 }

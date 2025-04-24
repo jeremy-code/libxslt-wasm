@@ -1,6 +1,8 @@
 # C
 _free
 _malloc
+_memcpy
+_memset
 # main.c
 _main
 # libxml
@@ -39,6 +41,7 @@ _xmlOutputBufferCreateFile
 _xmlOutputBufferCreateFilename
 _xmlOutputBufferGetContent
 _xmlOutputBufferGetSize
+_xmlOutputBufferWrite
 ## <libxml/string.h>
 _xmlCharStrdup
 # Libxslt

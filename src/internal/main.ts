@@ -1,9 +1,13 @@
 import { libxslt } from "./module.ts";
 
-// `main.c`
 export const {
-  _main: main,
-  _libxsltWasmExternalEntityLoader: libxsltWasmExternalEntityLoader,
+  // C
   _free: free,
   _malloc: malloc,
+  _memcpy: memcpy,
+  _memset: memset,
+
+  // `main.c`
+  _main: main,
+  _libxsltWasmExternalEntityLoader: libxsltWasmExternalEntityLoader,
 } = libxslt;

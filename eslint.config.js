@@ -1,7 +1,12 @@
 import eslint from "@eslint/js";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import pluginImportX, { createNodeResolver } from "eslint-plugin-import-x";
+import pluginJest from "eslint-plugin-jest";
+import { defaults } from "jest-config";
 import tseslint from "typescript-eslint";
+
+// [ "**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)" ]
+const TEST_FILE_GLOBS = defaults.testMatch;
 
 export default tseslint.config(
   { ignores: ["dist/", "libxml2/", "libxslt/"] },
@@ -35,6 +40,18 @@ export default tseslint.config(
         createNodeResolver(),
       ],
     },
+  },
+  {
+    files: TEST_FILE_GLOBS,
+    extends: [
+      { name: "jest/recommended", ...pluginJest.configs["flat/recommended"] },
+      {
+        rules: {
+          // https://github.com/jest-community/eslint-plugin-jest/blob/HEAD/docs/rules/prefer-importing-jest-globals.md
+          "jest/prefer-importing-jest-globals": "error",
+        },
+      },
+    ],
   },
   {
     extends: [tseslint["configs"].disableTypeChecked],

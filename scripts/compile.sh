@@ -33,9 +33,9 @@ SCRIPT_DIR="$(dirname "$0")"
 SOURCE_DIR=$(realpath "${SCRIPT_DIR}/..")
 
 PKG_CONFIG_PC_FILES=(
-  $SOURCE_DIR/libxml2/libxml-2.0.pc
-  $SOURCE_DIR/libxslt/libxslt.pc
-  $SOURCE_DIR/libxslt/libexslt.pc
+  "${SOURCE_DIR}/libxml2/libxml-2.0.pc"
+  "${SOURCE_DIR}/libxslt/libxslt.pc"
+  "${SOURCE_DIR}/libxslt/libexslt.pc"
 )
 
 emcc \

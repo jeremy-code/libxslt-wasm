@@ -1,16 +1,12 @@
-import { NULL_POINTER, POINTER_SIZE } from "../constants.ts";
-import {
-  lengthBytesUTF8,
-  stringToNewUTF8,
-  UTF8ToString,
-} from "../internal/emscripten.ts";
+import { NULL_POINTER } from "../constants.ts";
+import { stringToNewUTF8, UTF8ToString } from "../internal/emscripten.ts";
 import {
   xmlAllocOutputBuffer,
   xmlOutputBufferGetSize,
   xmlOutputBufferGetContent,
   xmlOutputBufferClose,
   xmlCharEncoding,
-  xmlOutputBufferWrite,
+  xmlOutputBufferWriteString,
 } from "../internal/libxml2.ts";
 import { free } from "../internal/main.ts";
 import { DataSegment } from "../utils/DataSegment.ts";
@@ -39,18 +35,14 @@ class XmlOutputBuffer extends DataSegment {
       : 0;
   }
 
-  write(str: string): void {
+  writeString(str: string): void {
     if (this.dataOffset === null) {
       throw new Error("XML output buffer already disposed");
     }
 
     const strPtr = stringToNewUTF8(str);
 
-    const bytesWritten = xmlOutputBufferWrite(
-      this.dataOffset,
-      lengthBytesUTF8(str) + POINTER_SIZE,
-      strPtr,
-    );
+    const bytesWritten = xmlOutputBufferWriteString(this.dataOffset, strPtr);
     free(strPtr);
 
     if (bytesWritten === -1) {

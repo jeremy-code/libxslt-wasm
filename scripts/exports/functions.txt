@@ -1,18 +1,21 @@
-# C
+# <stdlib.h>
+_calloc
 _free
 _malloc
-_memcpy
-_memset
+_realloc
 # main.c
 _main
-# libxml
+# libxml2
 ## <libxml/HTMLtree.h>
 _htmlDocContentDumpFormatOutput
 ## <libxml/encoding.h>
 _xmlDetectCharEncoding
+_xmlLookupCharEncodingHandler
+_xmlParseCharEncoding
 ## <libxml/parser.h>
 _xmlCleanupParser
 _xmlGetExternalEntityLoader
+_xmlHasFeature
 _xmlInitParser
 _xmlInputSetEncodingHandler
 _xmlLoadExternalEntity
@@ -23,18 +26,43 @@ _xmlNewInputFromString
 _xmlNewInputFromUrl
 _xmlParseDTD
 _xmlParseEntity
+_xmlParseFile
+_xmlParseMemory
 _xmlReadDoc
 _xmlReadFd
 _xmlReadFile
 _xmlReadIO
 _xmlReadMemory
+_xmlSetExternalEntityLoader
 ## <libxml/tree.h>
 _xmlDocDump
+_xmlDocDumpFormatMemory
+_xmlDocDumpFormatMemoryEnc
+_xmlDocDumpMemory
+_xmlDocDumpMemoryEnc
 _xmlDocFormatDump
+_xmlDocGetRootElement
+_xmlDocSetRootElement
 _xmlFreeDoc
+_xmlFreeDtd
+_xmlGetDocCompressMode
+_xmlGetIntSubset
+_xmlNodeDump
 _xmlNodeDumpOutput
-## <libxml/io.h>
+_xmlSaveFileTo
+_xmlSaveFormatFile
+_xmlSaveFormatFileEnc
+_xmlSaveFormatFileTo
+## <libxml/xinclude.h>
+_xmlXIncludeFreeContext
+_xmlXIncludeGetLastError
+_xmlXIncludeNewContext
+_xmlXIncludeProcess
+_xmlXIncludeProcessFlags
+_xmlXIncludeProcessFlagsData
+## <libxml/xmlIO.h>
 _xmlAllocOutputBuffer
+_xmlCheckFilename
 _xmlOutputBufferClose
 _xmlOutputBufferCreateFd
 _xmlOutputBufferCreateFile
@@ -42,15 +70,29 @@ _xmlOutputBufferCreateFilename
 _xmlOutputBufferGetContent
 _xmlOutputBufferGetSize
 _xmlOutputBufferWrite
-## <libxml/string.h>
+_xmlOutputBufferWriteString
+## <libxml/xmlerror.h>
+_xmlGetLastError
+_xmlResetLastError
+## <libxml/xmlstring.h>
 _xmlCharStrdup
-# Libxslt
+_xmlCheckUTF8
+## <libxml/xpath.h>
+_xmlXPathOrderDocElems
+# libxslt
+## <libxslt/attributes.h>
+_xsltFreeAttributeSetsHashes
+_xsltResolveStylesheetAttributeSet
 ## <libxslt/extensions.h>
 _xsltInitGlobals
 ## <libxslt/extra.h>
 _xsltRegisterAllExtras
+## <libxslt/imports.h>
+_xsltNextImport
 ## <libxslt/transform.h>
 _xsltApplyStylesheet
+_xsltGetXIncludeDefault
+_xsltSetXIncludeDefault
 ## <libxslt/xslt.h>
 _xsltCleanupGlobals
 _xsltInit
@@ -58,10 +100,16 @@ _xsltInit
 _xsltFreeStylesheet
 _xsltLoadStylesheetPI
 _xsltParseStylesheetDoc
+_xsltParseStylesheetImportedDoc
+_xsltParseStylesheetProcess
+_xsltUninit
 ## <libxslt/xsltutils.h>
 _xsltSaveResultToFile
 _xsltSaveResultTo
-# exslt
+_xsltXPathCompile
+_xsltXPathCompileFlags
+# libexslt
+## <libexslt/exslt.h>
 _exsltCommonRegister
 _exsltDateRegister
 _exsltDynRegister

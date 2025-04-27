@@ -8,6 +8,7 @@ const jestConfig = {
   ...createDefaultEsmPreset({ tsconfig: "<rootDir>/tsconfig.test.json" }),
   injectGlobals: false,
   roots: ["<rootDir>/src/"],
+  testEnvironment: "node",
   testPathIgnorePatterns: [
     ...defaults.testPathIgnorePatterns,
     "<rootDir>/dist/",

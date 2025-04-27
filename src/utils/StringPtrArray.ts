@@ -1,7 +1,7 @@
 import { DataSegment } from "./DataSegment.ts";
-import { POINTER_SIZE, NULL_POINTER } from "../constants.ts";
+import { POINTER_SIZE } from "../constants.ts";
 import { setValue, stringToNewUTF8 } from "../internal/emscripten.ts";
-import { malloc, free } from "../internal/main.ts";
+import { free, calloc } from "../internal/main.ts";
 
 /**
  * An array of pointers to UTF-8 encoded strings or `.dataOffset` == `char**`.
@@ -25,23 +25,13 @@ class StringPtrArray extends DataSegment {
       stringToNewUTF8(str),
     );
 
-    const stringPtrArrayPtr = malloc(
-      stringPtrArray.length * POINTER_SIZE +
-        (isNullTerminated ? POINTER_SIZE : 0),
+    const stringPtrArrayPtr = calloc(
+      stringPtrArray.length + (isNullTerminated ? 1 : 0),
+      POINTER_SIZE,
     );
     stringPtrArray.forEach((stringPtr, index) => {
       setValue(stringPtrArrayPtr + index * POINTER_SIZE, stringPtr, "*");
     });
-
-    // Not strictly necessary since `malloc()` initializes the memory to zero
-    if (isNullTerminated) {
-      setValue(
-        stringPtrArrayPtr + stringPtrArray.length * POINTER_SIZE,
-        NULL_POINTER,
-        "*",
-      );
-      // Note, null pointer is NOT added to `stringPtrArray`
-    }
 
     return Object.assign(new StringPtrArray(stringPtrArrayPtr), {
       stringPtrArray: stringPtrArray,

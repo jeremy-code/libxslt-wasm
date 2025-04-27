@@ -7,18 +7,26 @@ import {
   exsltSetsRegister,
   exsltStrRegister,
   exsltRegisterAll,
-} from "../internal/libxslt.ts";
+  exsltSaxonRegister,
+} from "../internal/libexslt.ts";
 
 // Corresponds to namespace "http://exslt.org/*"
 const EXSLT_MODULES_MAP = {
-  "dates-and-times": exsltDateRegister,
-  dynamic: exsltDynRegister,
   common: exsltCommonRegister,
-  functions: exsltFuncRegister,
   math: exsltMathRegister,
-  // "regular-expressions": Doesn't seem to exist...?
   sets: exsltSetsRegister,
+  functions: exsltFuncRegister,
+  "dates-and-times": exsltDateRegister,
   strings: exsltStrRegister,
+  // "regular-expressions": Doesn't seem to exist...?
+  dynamic: exsltDynRegister,
+  // "random"
+
+  /**
+   * Registers the SAXON extension module (`expression()`, `eval()`, `evaluate()`,
+   * `line-number()`, `systemId()`)
+   */
+  saxon: exsltSaxonRegister,
 };
 
 const registerModule = (module: keyof typeof EXSLT_MODULES_MAP): void => {

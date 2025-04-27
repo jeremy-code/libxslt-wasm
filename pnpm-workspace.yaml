@@ -1,0 +1,6 @@
+# https://pnpm.io/settings
+
+# Build Settings
+verifyDepsBeforeRun: true
+onlyBuiltDependencies:
+  - unrs-resolver

@@ -3,9 +3,11 @@
  * @type {import("prettier").Config}
  */
 export default {
+  experimentalTernaries: true,
   printWidth: 80,
   tabWidth: 2,
+  useTabs: false,
   singleQuote: false,
   trailingComma: "all",
-  experimentalTernaries: true,
+  objectWrap: "collapse",
 };

@@ -59,6 +59,7 @@ emcc \
   -sMODULARIZE=1 \
   -sEXPORT_ES6=1 \
   -sEXPORT_NAME="LibxsltModule" \
+  -sMIN_NODE_VERSION="190200" \
   -o ${SOURCE_DIR}/dist/output/libxslt.js \
   ${SOURCE_DIR}/module/main.c \
   ${SOURCE_DIR}/module/enum.cpp \

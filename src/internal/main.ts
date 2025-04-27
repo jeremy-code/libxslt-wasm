@@ -1,11 +1,11 @@
 import { libxslt } from "./module.ts";
 
 export const {
-  // C
+  // <stdlib.h>
+  _calloc: calloc,
   _free: free,
   _malloc: malloc,
-  _memcpy: memcpy,
-  _memset: memset,
+  _realloc: realloc,
 
   // `main.c`
   _main: main,

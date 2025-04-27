@@ -1,14 +1,25 @@
+# preamble.js
+addRunDependency
+removeRunDependency
+# libcore.js
+ptrToString
+warnOnce
+handleException
+getNativeTypeSize
+# libccall.js
 ccall
 cwrap
+# libstrings.js
 UTF8ToString
-getValue
-setValue
-lengthBytesUTF8
-stringToUTF8
 stringToUTF8Array
+stringToUTF8
+lengthBytesUTF8
+intArrayFromString
+intArrayToString
 stringToNewUTF8
 writeArrayToMemory
-getNativeTypeSize
-intArrayToString
-intArrayFromString
-warnOnce
+# libgetvalue.js
+getValue
+setValue
+# libfs_shared.js
+FS

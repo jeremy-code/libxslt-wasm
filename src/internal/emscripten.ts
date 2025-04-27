@@ -1,38 +1,34 @@
 import { libxslt } from "./module.ts";
 
 export const {
-  // Call compiled C functions. I avoid using these since I prefer having typing
-  // with TypeScript (especially for number of parameters)
-  ccall,
-  cwrap,
-
-  // Access Memory
-  getValue,
-  setValue,
-
-  // Conversion functions
-  UTF8ToString,
-  stringToUTF8,
-  intArrayFromString,
-  intArrayToString,
-  writeArrayToMemory,
-
-  // Run dependencies
+  // preamble.js
   addRunDependency,
   removeRunDependency,
 
-  lengthBytesUTF8,
-  stringToUTF8Array,
-  stringToNewUTF8,
+  // libcore.js
+  ptrToString,
+  warnOnce,
+  handleException,
   getNativeTypeSize,
 
-  warnOnce,
+  // libccall.js
+  ccall,
+  cwrap,
 
-  // FS
-  FS_createPath,
-  FS_createDataFile,
-  FS_createPreloadedFile,
-  FS_unlink,
-  FS_createLazyFile,
-  FS_createDevice,
+  // libstrings.js
+  UTF8ToString,
+  stringToUTF8Array,
+  stringToUTF8,
+  lengthBytesUTF8,
+  intArrayFromString,
+  intArrayToString,
+  stringToNewUTF8,
+  writeArrayToMemory,
+
+  // libgetvalue.js
+  getValue,
+  setValue,
+
+  // libfs_shared.js
+  FS,
 } = libxslt;

@@ -1,7 +1,26 @@
 {
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+    // Avoid using "source.organizeImports" since it conflicts with `eslint-plugin-import-x`
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "libxml2": true,
+    "libxslt": true
+  },
   "eslint.useFlatConfig": true,
-  "typescript.enablePromptUseWorkspaceTsdk": true, // Use the workspace TypeScript version
-  "typescript.tsdk": "./node_modules/typescript/lib"
+  "jest.jestCommandLine": "node --experimental-wasm-stack-switching --experimental-wasm-jspi --experimental-vm-modules -- node_modules/jest/bin/jest.js",
+  "jest.runMode": "watch",
+  "typescript.enablePromptUseWorkspaceTsdk": true, // Enables prompting of users to use the TypeScript version configured in the workspace for Intellisense
+  "typescript.preferences.autoImportSpecifierExcludeRegexes": [
+    "^node:test$" // Otherwise, TypeScript imports from "node:test" instead of "jest"
+  ],
+  "typescript.preferences.importModuleSpecifierEnding": "js", // Do not shorten path endings; include the `.js` or `.ts` extension
+  "typescript.tsdk": "./node_modules/typescript/lib",
+
+  // Language-Specific Configuration Overrides
+  "[c][cpp]": { "editor.defaultFormatter": "ms-vscode.cpptools" },
+  "[graphql][handlebars][javascript][javascriptreact][json][jsonc][jsonl][markdown][typescript][typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

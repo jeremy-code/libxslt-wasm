@@ -7,6 +7,7 @@
     "prepare": "husky",
     "typecheck": "tsc --noEmit",
     "build": "tsc",
+    "build:libxslt": "./scripts/build.sh",
     "compile": "./scripts/compile.sh",
     "test": "NODE_OPTIONS='--import ./setup.js --experimental-vm-modules' jest",
     "test:watch": "node --run test -- --watch",

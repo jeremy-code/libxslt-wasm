@@ -1,9 +1,12 @@
-#include <string.h>
 #include <emscripten.h>
 #include <libxml/parser.h>
 #include <libxml/uri.h>
 #include <libxslt/xsltutils.h>
+#include <string.h>
 
+// `clang-format` will clobber macros such as `EM_ASYNC_JS`
+// https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html#calling-javascript-from-c-c
+// clang-format off
 EM_ASYNC_JS(void, fetchBytes, (const char *url, void **pbuffer, int *pnum, int *perror), {
   const response = await fetch(UTF8ToString(url), {
     // Prioritize XML documents (including application/*+xml) based on MIME type
@@ -26,13 +29,15 @@ EM_ASYNC_JS(void, fetchBytes, (const char *url, void **pbuffer, int *pnum, int *
     setValue(pbuffer, bufferToFill, "*");
   }
 });
+// clang-format on
 
 /**
  * Since `xmlDefaultExternalEntityLoader` is not exported in
  * <libxml/parserInternals.h>, the default external entity loader is stored in a
  * global variable after running `xmlGetExternalEntityLoader()`
  *
- * @see <a href="https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/parserInternals.c#L2569">parserInternals.c</a>
+ * @see <a
+ * href="https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/parserInternals.c#L2569">parserInternals.c</a>
  */
 static xmlExternalEntityLoader defaultExternalEntityLoader = NULL;
 

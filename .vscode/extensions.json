@@ -1,1 +1,8 @@
-{ "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"] }
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-vscode.cpptools",
+    "orta.vscode-jest"
+  ]
+}

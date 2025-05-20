@@ -1,0 +1,35 @@
+{
+  "env": {
+    "EMSCRIPTEN_CFLAGS": [
+      "-target",
+      "wasm32-unknown-emscripten",
+      "-fignore-exceptions",
+      "-mllvm",
+      "-combiner-global-alias-analysis=false",
+      "-mllvm",
+      "-enable-emscripten-sjlj",
+      "-mllvm",
+      "-disable-lsr",
+      "--sysroot=/emsdk/upstream/emscripten/cache/sysroot",
+      "-DEMSCRIPTEN",
+      "-Xclang",
+      "-iwithsysroot/include/fakesdl",
+      "-Xclang",
+      "-iwithsysroot/include/compat"
+    ]
+  },
+  "configurations": [
+    {
+      "name": "Emscripten",
+      "compilerPath": "/emsdk/upstream/bin/clang++",
+      "compilerArgs": ["${EMSCRIPTEN_CFLAGS}"],
+      "intelliSenseMode": "linux-clang-x64",
+      "includePath": [
+        "${workspaceFolder}/local/include",
+        "${workspaceFolder}/local/include/**"
+      ]
+    }
+  ],
+  "version": 4,
+  "enableConfigurationSquiggles": true
+}

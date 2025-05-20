@@ -3,6 +3,9 @@
 # Run with DEBUG=1 or SANITIZE=1 to enable debugging or sanitizers.
 # This script can be ran locally or in a Docker container.
 
+readonly SCRIPT_DIR="$(dirname "$0")"
+readonly SOURCE_DIR=$(realpath "${SCRIPT_DIR}/..")
+
 # https://emscripten.org/docs/tools_reference/settings_reference.html
 DEBUG_FLAGS=(
   -sVERBOSE=0         # generate more verbose output during compilation
@@ -28,9 +31,6 @@ SANITIZE_FLAGS=(
   -sALLOW_MEMORY_GROWTH=1     # Grow the memory arrays at runtime, seamlessly and dynamically
   -g2                         # When linking, preserve function names in compiled code
 )
-
-SCRIPT_DIR="$(dirname "$0")"
-SOURCE_DIR=$(realpath "${SCRIPT_DIR}/..")
 
 PKG_CONFIG_PC_FILES=(
   "${SOURCE_DIR}/libxml2/libxml-2.0.pc"

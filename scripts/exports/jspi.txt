@@ -9,6 +9,7 @@ xmlNewEntityInputStream
 xmlParseCtxtExternalEntity
 xmlXPathCompOpEval
 xmlReadFile
+xmlReadMemory
 # libxslt
 xsltDocumentFunctionLoadDocument
 xsltLoadDocument

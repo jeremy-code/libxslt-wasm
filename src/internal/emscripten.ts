@@ -2,6 +2,13 @@ import { libxslt } from "./module.ts";
 
 export const {
   // preamble.js
+  HEAPU8,
+  HEAP16,
+  HEAPU16,
+  HEAP32,
+  HEAPU32,
+  HEAPF32,
+  HEAPF64,
   addRunDependency,
   removeRunDependency,
 

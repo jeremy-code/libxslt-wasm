@@ -1,6 +1,7 @@
 import { XmlDocument } from "./XmlDocument.ts";
 import { XmlOutputBuffer } from "./XmlOutputBuffer.ts";
 import { NULL_POINTER } from "../constants.ts";
+import type { Encoding } from "../interfaces.ts";
 import {
   xsltApplyStylesheet,
   xsltLoadStylesheetPI,
@@ -78,6 +79,25 @@ class XsltStylesheet extends XmlDocument {
 
   static override async fromString(string: string) {
     return this.fromXmlDocument(await super.fromString(string));
+  }
+
+  static override async fromBuffer(
+    buffer: ArrayBufferLike,
+    options: Parameters<typeof this.from>[1],
+  ) {
+    return this.from(new Uint8Array(buffer), options);
+  }
+
+  static override async from(
+    buffer: Uint8Array,
+    {
+      url,
+      encoding,
+      options,
+    }: { url?: string; encoding?: Encoding | null; options?: number },
+  ) {
+    const xmlDocument = await super.from(buffer, { url, encoding, options });
+    return this.fromXmlDocument(xmlDocument);
   }
 
   // Since `xsltApplyStylesheet()` uses `xmlXPathCompOpEval()` internally for

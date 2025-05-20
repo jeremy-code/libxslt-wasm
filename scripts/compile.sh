@@ -49,6 +49,7 @@ emcc \
   --emit-tsd ${SOURCE_DIR}/dist/output/libxslt.d.ts \
   -sINVOKE_RUN=1 \
   -sEXIT_RUNTIME=0 \
+  -sALLOW_MEMORY_GROWTH=1 \
   -sENVIRONMENT=node \
   -sJSPI=1 \
   -sJSPI_EXPORTS=@${SOURCE_DIR}/scripts/exports/jspi.txt \
@@ -61,8 +62,7 @@ emcc \
   -sEXPORT_NAME="LibxsltModule" \
   -sMIN_NODE_VERSION="190200" \
   -o ${SOURCE_DIR}/dist/output/libxslt.js \
-  ${SOURCE_DIR}/module/main.c \
-  ${SOURCE_DIR}/module/enum.cpp \
+  "${SOURCE_DIR}/module/"* \
   ${SOURCE_DIR}/libxml2/.libs/libxml2.a \
   ${SOURCE_DIR}/libxslt/libxslt/.libs/libxslt.a \
   ${SOURCE_DIR}/libxslt/libexslt/.libs/libexslt.a

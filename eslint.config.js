@@ -69,6 +69,11 @@ export default defineConfig(
            */
           "jest/prefer-importing-jest-globals": "error",
         },
+        settings: {
+          "import/resolver-next": [
+            createTypeScriptImportResolver({ tsconfig: "tsconfig.spec.json" }),
+          ],
+        },
       },
     ],
   },

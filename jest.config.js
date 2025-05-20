@@ -1,14 +1,14 @@
+/** @import { JestConfigWithTsJest } from "ts-jest" */
 import { defaults } from "jest-config";
-import { createDefaultEsmPreset } from "ts-jest";
+import { createJsWithTsEsmPreset } from "ts-jest";
 
 /**
- * @type {import("ts-jest").JestConfigWithTsJest}
+ * @satisfies {JestConfigWithTsJest}
  */
 const jestConfig = {
-  ...createDefaultEsmPreset({ tsconfig: "<rootDir>/tsconfig.test.json" }),
+  ...createJsWithTsEsmPreset({ tsconfig: "<rootDir>/tsconfig.spec.json" }),
   injectGlobals: false,
   roots: ["<rootDir>/src/"],
-  testEnvironment: "node",
   testPathIgnorePatterns: [
     ...defaults.testPathIgnorePatterns,
     "<rootDir>/dist/",

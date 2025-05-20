@@ -1,4 +1,4 @@
-import libxsltFactory from "#libxslt";
+import libxsltFactory from "libxslt-wasm/output/libxslt";
 
 const libxslt = await libxsltFactory();
 

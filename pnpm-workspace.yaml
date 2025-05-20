@@ -1,6 +1,10 @@
 # https://pnpm.io/settings
 
-# Build Settings
-verifyDepsBeforeRun: true
+# Build Settings (https://pnpm.io/settings#build-settings)
+nodeOptions: "--import=./setup.js --experimental-vm-modules"
+verifyDepsBeforeRun: "install"
 onlyBuiltDependencies:
   - unrs-resolver
+
+# https://pnpm.io/cli/run#shellemulator
+shellEmulator: true

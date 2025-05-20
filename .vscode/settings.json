@@ -9,7 +9,7 @@
     "libxslt": true
   },
   "eslint.useFlatConfig": true,
-  "jest.jestCommandLine": "node --experimental-wasm-stack-switching --experimental-wasm-jspi --experimental-vm-modules -- node_modules/jest/bin/jest.js",
+  "jest.jestCommandLine": "pnpm run test --",
   "jest.runMode": "watch",
   "typescript.enablePromptUseWorkspaceTsdk": true, // Enables prompting of users to use the TypeScript version configured in the workspace for Intellisense
   "typescript.preferences.autoImportSpecifierExcludeRegexes": [

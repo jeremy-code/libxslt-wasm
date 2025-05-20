@@ -10,6 +10,7 @@
     /* Modules */
     "module": "NodeNext",
     "rootDir": "src/",
+    "types": ["node"],
     "rewriteRelativeImportExtensions": true,
     "resolvePackageJsonExports": true,
     "resolvePackageJsonImports": true,

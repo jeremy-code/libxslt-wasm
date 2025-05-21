@@ -23,23 +23,19 @@ type XmlDocumentBaseOptions = {
  * A wrapper class for `xmlDocPtr` in libxml2
  */
 class XmlDocument extends DataSegment {
-  static async fromFileOrUrl(
-    fileOrUrl: string,
+  static async fromUrl(
+    url: string,
     { encoding, options }: XmlDocumentBaseOptions = {},
   ) {
     const encodingPtr = encoding ? stringToNewUTF8(encoding) : NULL_POINTER;
-    const fileOrUrlPtr = stringToNewUTF8(fileOrUrl);
+    const urlPtr = stringToNewUTF8(url);
     const xmlDocument = new XmlDocument(
-      await xmlReadFile(
-        fileOrUrlPtr,
-        encodingPtr,
-        parseXmlOptions(options ?? {}),
-      ),
+      await xmlReadFile(urlPtr, encodingPtr, parseXmlOptions(options ?? {})),
     );
     if (encodingPtr !== NULL_POINTER) {
       free(encodingPtr);
     }
-    free(fileOrUrlPtr);
+    free(urlPtr);
     return xmlDocument;
   }
 

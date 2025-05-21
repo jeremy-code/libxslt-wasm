@@ -10,10 +10,10 @@ import { registerModule } from "libxslt-wasm/exslt";
 test.skip("dummy test", async () => {
   registerModule("common"); // Register EXSLT common module
 
-  using doc: XmlDocument = await XmlDocument.fromFileOrUrl(
+  using doc: XmlDocument = await XmlDocument.fromUrl(
     "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/2b4255a7-f9f5-4235-8dbb-b0f03acbd624.xml",
   );
-  // Equivalent to `await XsltStylesheet.fromFileOrUrl("https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl");`
+  // Equivalent to `await XsltStylesheet.fromUrl("https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl");`
   using xsltStylesheet: XsltStylesheet | null =
     await XsltStylesheet.fromEmbeddedXmlDocument(doc); // From <?xml-stylesheet?> processing instruction
 

@@ -35,8 +35,8 @@ class XsltStylesheet extends XmlDocument {
       );
   }
 
-  static override async fromFileOrUrl(fileOrUrl: string) {
-    return this.fromXmlDocument(await super.fromFileOrUrl(fileOrUrl));
+  static override async fromUrl(fileOrUrl: string) {
+    return this.fromXmlDocument(await super.fromUrl(fileOrUrl));
   }
 
   static override async fromString(string: string) {

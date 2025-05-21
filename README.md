@@ -31,7 +31,7 @@ This library is fairly niche and is not intended to be a drop-in replacement for
 
 - Applying XSLT to XML documents and NOT for general-purpose XML parsing or querying (e.g. XPath, DOM, etc.)
 - Applying XSLT 1.0 and not XSLT 2.0/3.0
-- Replicating the behavior of browsers (specifically WebKit and Blink which use `libxslt`) in Node.js
+- Replicating the behavior of browsers (specifically WebKit and Blink which use `libxslt`)
 - Parsing an XSLT stylesheet that includes a number of external files (via `xsl:include`, `xsl:import`) that would be infeasible to download beforehand with relative URLs
 - Capable of enabling [EXSLT](https://exslt.github.io/) modules and their functions
 
@@ -45,10 +45,10 @@ import { registerModule } from "libxslt-wasm/exslt";
 
 registerModule("common"); // Register EXSLT common module
 
-using doc: XmlDocument = await XmlDocument.fromFileOrUrl(
+using doc: XmlDocument = await XmlDocument.fromUrl(
   "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/2b4255a7-f9f5-4235-8dbb-b0f03acbd624.xml",
 );
-// Equivalent to `await XsltStylesheet.fromFileOrUrl("https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl");`
+// Equivalent to `await XsltStylesheet.fromUrl("https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl");`
 using xsltStylesheet: XsltStylesheet | null =
   await XsltStylesheet.fromEmbeddedXmlDocument(doc); // From <?xml-stylesheet?> processing instruction
 
@@ -70,7 +70,6 @@ However, there are some caveats:
 - Top-level await is required (see [src/internal/module.ts](src/internal/module.ts)) which is only avaliable in Node.js 14.8+ and in [ECMAScript modules](https://nodejs.org/api/packages.html#modules-packages) (ESM)
 - [JavaScript Promise Integration (JSPI)](https://github.com/WebAssembly/js-promise-integration/blob/main/proposals/js-promise-integration/Overview.md) must be enabled on Node.js via `--experimental-wasm-jspi` (v22+) or `--experiment-wasm-stack-switching` (v19.2+).
   - Furthermore, since this library operates by using JSPI to intercept any HTTP requests with [Node.js fetch](https://nodejs.org/api/globals.html#fetch) (v18+), some functions in this library return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-- Currently, since [`NODERAWFS`](https://emscripten.org/docs/api_reference/Filesystem-API.html#noderawfs) is enabled to intercept file system calls with Node.js functions, this library currently only works on Node.js. While it could be modified to work on browsers, that would be a niche use case since all mainstream browsers already have both XSLT transformation and the [XSLTProcessor API](https://developer.mozilla.org/en-US/docs/Web/API/XSLTProcessor#browser_compatibility) built-in
 - Since this library is a WebAssembly port of `libxslt`, it does not support the [XSLT 2.0](https://www.w3.org/TR/xslt20)/[3.0](https://www.w3.org/TR/xslt30) or [XQuery](https://www.w3.org/TR/xquery/) specifications
 - To interact with the compiled WebAssembly memory, wrapper classes are provided (`XmlDocument`, `XsltStylesheet`, etc.) that must be disposed of after use (either declaratively with the `using` statement or imperatively with the `.close()` method) to prevent memory leaks
 

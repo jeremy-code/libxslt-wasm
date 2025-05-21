@@ -31,8 +31,8 @@ describe("StringPtrArray", () => {
         stringPtrArrayInstance.delete();
       });
 
-      test(".dataOffset should not be null", () => {
-        expect(stringPtrArrayInstance.dataOffset).not.toBeNull();
+      test(".byteOffset should not be null", () => {
+        expect(stringPtrArrayInstance.byteOffset).not.toBeNull();
       });
 
       test(".stringPtrArray should have the same length as the input array", () => {
@@ -57,11 +57,11 @@ describe("StringPtrArray", () => {
         ).toEqual(stringArray);
       });
 
-      test(".dataOffset should correspond to the pointer values of .stringPtrArray", () => {
+      test(".byteOffset should correspond to the pointer values of .stringPtrArray", () => {
         expect(
           Array.from({ length: stringArray.length }, (_, index) =>
             getValue(
-              stringPtrArrayInstance.dataOffset! + index * POINTER_SIZE,
+              stringPtrArrayInstance.byteOffset! + index * POINTER_SIZE,
               "*",
             ),
           ),
@@ -72,7 +72,7 @@ describe("StringPtrArray", () => {
         const getNumOfBytesUntilNullPointer = () => {
           let numOfBytes = 0;
           while (
-            getValue(stringPtrArrayInstance.dataOffset! + numOfBytes, "*") !==
+            getValue(stringPtrArrayInstance.byteOffset! + numOfBytes, "*") !==
             NULL_POINTER
           ) {
             numOfBytes += POINTER_SIZE;
@@ -90,7 +90,7 @@ describe("StringPtrArray", () => {
       test(`last pointer in memory ${isNullTerminated ? "should" : "should not"} be NULL_POINTER (${NULL_POINTER})`, () => {
         expect(
           getValue(
-            stringPtrArrayInstance.dataOffset! +
+            stringPtrArrayInstance.byteOffset! +
               stringPtrArrayInstance.byteLength -
               POINTER_SIZE,
             "*",

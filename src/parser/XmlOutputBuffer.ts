@@ -1,3 +1,4 @@
+import { DataSegment } from "../common/DataSegment.ts";
 import { NULL_POINTER } from "../constants.ts";
 import { stringToNewUTF8, UTF8ToString } from "../internal/emscripten.ts";
 import {
@@ -9,7 +10,6 @@ import {
   xmlOutputBufferWriteString,
 } from "../internal/libxml2.ts";
 import { free } from "../internal/main.ts";
-import { DataSegment } from "../utils/DataSegment.ts";
 
 class XmlOutputBuffer extends DataSegment {
   /**
@@ -30,19 +30,17 @@ class XmlOutputBuffer extends DataSegment {
    * Returns length of the data currently held in the output buffer
    */
   get size() {
-    return this.dataOffset !== null ?
-        xmlOutputBufferGetSize(this.dataOffset)
-      : 0;
+    return xmlOutputBufferGetSize(this.byteOffset);
   }
 
   writeString(str: string): void {
-    if (this.dataOffset === null) {
+    if (this.byteOffset === null) {
       throw new Error("XML output buffer already disposed");
     }
 
     const strPtr = stringToNewUTF8(str);
 
-    const bytesWritten = xmlOutputBufferWriteString(this.dataOffset, strPtr);
+    const bytesWritten = xmlOutputBufferWriteString(this.byteOffset, strPtr);
     free(strPtr);
 
     if (bytesWritten === -1) {
@@ -51,22 +49,22 @@ class XmlOutputBuffer extends DataSegment {
   }
 
   override toString() {
-    if (this.dataOffset === null) {
+    if (this.byteOffset === null) {
       throw new Error("XML output buffer already disposed");
     }
 
-    const content = xmlOutputBufferGetContent(this.dataOffset);
+    const content = xmlOutputBufferGetContent(this.byteOffset);
     const outputString = UTF8ToString(content);
 
     return outputString;
   }
 
   override delete() {
-    if (this.dataOffset === null) {
+    if (this.byteOffset === null) {
       throw new Error("XML output buffer already disposed");
     }
 
-    const bytesWritten = xmlOutputBufferClose(this.dataOffset);
+    const bytesWritten = xmlOutputBufferClose(this.byteOffset);
 
     if (bytesWritten < 0) {
       // bytesWritten is negative of enum `xmlParserErrors`
@@ -76,7 +74,6 @@ class XmlOutputBuffer extends DataSegment {
         )}: Failed to close XML output buffer`,
       );
     }
-    super.delete();
   }
 }
 

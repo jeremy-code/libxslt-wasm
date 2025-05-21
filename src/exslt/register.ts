@@ -29,7 +29,9 @@ const EXSLT_MODULES_MAP = {
   saxon: exsltSaxonRegister,
 };
 
-const registerModule = (module: keyof typeof EXSLT_MODULES_MAP): void => {
+type ExsltModule = keyof typeof EXSLT_MODULES_MAP;
+
+const registerModule = (module: ExsltModule): void => {
   const exsltRegister = EXSLT_MODULES_MAP[module];
 
   if (exsltRegister === undefined) {

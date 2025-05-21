@@ -4,7 +4,7 @@ import { setValue, stringToNewUTF8 } from "../internal/emscripten.ts";
 import { free, calloc } from "../internal/main.ts";
 
 /**
- * An array of pointers to UTF-8 encoded strings or `.dataOffset` == `char**`.
+ * An array of pointers to UTF-8 encoded strings or `.byteOffset` == `char**`.
  * May be null terminated
  */
 class StringPtrArray extends DataSegment {
@@ -24,7 +24,6 @@ class StringPtrArray extends DataSegment {
     const stringPtrArray = stringArray.map((str): number =>
       stringToNewUTF8(str),
     );
-
     const stringPtrArrayPtr = calloc(
       stringPtrArray.length + (isNullTerminated ? 1 : 0),
       POINTER_SIZE,
@@ -51,11 +50,8 @@ class StringPtrArray extends DataSegment {
     this.stringPtrArray.forEach((stringPtr) => {
       free(stringPtr);
     });
-    if (this.dataOffset !== null) {
-      free(this.dataOffset);
-    }
+    free(this.byteOffset);
     this.stringPtrArray = [];
-    super.delete();
   }
 }
 

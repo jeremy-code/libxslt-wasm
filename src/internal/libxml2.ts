@@ -10,6 +10,7 @@ export const {
   _xmlParseCharEncoding: xmlParseCharEncoding,
 
   // <libxml/parser.h>
+  xmlParserOption,
   _xmlCleanupParser: xmlCleanupParser,
   _xmlGetExternalEntityLoader: xmlGetExternalEntityLoader,
   _xmlHasFeature: xmlHasFeature,

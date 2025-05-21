@@ -1,7 +1,6 @@
-import { XmlDocument } from "./XmlDocument.ts";
+import { XmlDocument, type XmlDocumentBaseOptions } from "./XmlDocument.ts";
 import { XmlOutputBuffer } from "./XmlOutputBuffer.ts";
 import { NULL_POINTER } from "../constants.ts";
-import type { Encoding } from "../interfaces.ts";
 import {
   xsltApplyStylesheet,
   xsltLoadStylesheetPI,
@@ -9,36 +8,7 @@ import {
   xsltParseStylesheetDoc,
   xsltSaveResultTo,
 } from "../internal/libxslt.ts";
-import { StringPtrArray } from "../utils/StringPtrArray.ts";
-
-// If you see errors when passing params, considering double quoting params so
-// they are considered literals rather than XPath expressions
-const parseXsltParams = (
-  params: Record<string, string> | undefined,
-): number => {
-  if (params === undefined) {
-    return NULL_POINTER;
-  }
-
-  const entries = Object.entries(params);
-  if (entries.length === 0) {
-    return NULL_POINTER;
-  }
-
-  const paramArray = entries
-    .map(([key, value]) => [key, String(value)])
-    .flat(1);
-  const paramsArrayPtr = StringPtrArray.fromStringArray(
-    paramArray,
-    true,
-  ).dataOffset;
-
-  if (paramsArrayPtr === null) {
-    throw new Error("Failed to allocate memory for XSLT parameters");
-  }
-
-  return paramsArrayPtr;
-};
+import { parseXsltParams } from "../utils/parseXsltParams.ts";
 
 class XsltStylesheet extends XmlDocument {
   /**
@@ -46,11 +16,7 @@ class XsltStylesheet extends XmlDocument {
    * instance of XsltStylesheet
    */
   static async fromXmlDocument(xmlDocument: XmlDocument) {
-    if (xmlDocument.dataOffset === null) {
-      throw new Error("XML document has already been disposed");
-    }
-
-    const xsltStylesheet = await xsltParseStylesheetDoc(xmlDocument.dataOffset);
+    const xsltStylesheet = await xsltParseStylesheetDoc(xmlDocument.byteOffset);
     return new XsltStylesheet(xsltStylesheet);
   }
 
@@ -60,12 +26,8 @@ class XsltStylesheet extends XmlDocument {
    * XsltStylesheet instance
    */
   static async fromEmbeddedXmlDocument(xmlDocument: XmlDocument) {
-    if (xmlDocument.dataOffset === null) {
-      throw new Error("XML document has already been disposed");
-    }
-
     const xsltStylesheetPtr = await xsltLoadStylesheetPI(
-      xmlDocument.dataOffset,
+      xmlDocument.byteOffset,
     );
 
     return xsltStylesheetPtr === NULL_POINTER ? null : (
@@ -90,11 +52,7 @@ class XsltStylesheet extends XmlDocument {
 
   static override async from(
     buffer: Uint8Array,
-    {
-      url,
-      encoding,
-      options,
-    }: { url?: string; encoding?: Encoding | null; options?: number },
+    { url, encoding, options }: XmlDocumentBaseOptions & { url?: string } = {},
   ) {
     const xmlDocument = await super.from(buffer, { url, encoding, options });
     return this.fromXmlDocument(xmlDocument);
@@ -104,17 +62,14 @@ class XsltStylesheet extends XmlDocument {
   // params, this must be async. Consider using `applyToOutputBuffer()` or
   // `applyToString()` for synchronous operations
   async apply(xmlDocument: XmlDocument, params?: Record<string, string>) {
-    if (this.dataOffset === null) {
-      throw new Error("XSLT stylesheet has already been disposed");
-    } else if (xmlDocument.dataOffset === null) {
-      throw new Error("XML document has already been disposed");
-    }
+    const xsltParams = parseXsltParams(params);
 
     const result = await xsltApplyStylesheet(
-      this.dataOffset,
-      xmlDocument.dataOffset,
-      parseXsltParams(params),
+      this.byteOffset,
+      xmlDocument.byteOffset,
+      xsltParams !== null ? xsltParams.byteOffset : NULL_POINTER,
     );
+    xsltParams?.delete();
     if (result === NULL_POINTER) {
       throw new Error("Failed to apply XSLT stylesheet to XML document");
     }
@@ -122,22 +77,12 @@ class XsltStylesheet extends XmlDocument {
   }
 
   applyToOutputBuffer(xmlDocument: XmlDocument) {
-    if (this.dataOffset === null) {
-      throw new Error("XSLT stylesheet has already been disposed");
-    } else if (xmlDocument.dataOffset === null) {
-      throw new Error("XML document has already been disposed");
-    }
-
     const outputBuffer = XmlOutputBuffer.allocate();
 
-    if (outputBuffer.dataOffset === null) {
-      throw new Error("Failed to allocate memory for XML output buffer");
-    }
-
     const bytesWritten = xsltSaveResultTo(
-      outputBuffer.dataOffset,
-      xmlDocument.dataOffset,
-      this.dataOffset,
+      outputBuffer.byteOffset,
+      xmlDocument.byteOffset,
+      this.byteOffset,
     );
 
     if (bytesWritten === -1) {
@@ -155,11 +100,9 @@ class XsltStylesheet extends XmlDocument {
   }
 
   override delete() {
-    if (this.dataOffset !== null) {
-      xsltFreeStylesheet(this.dataOffset);
+    if (this.byteOffset !== null) {
+      xsltFreeStylesheet(this.byteOffset);
     }
-    this.dataOffset = null;
-    // Do NOT call `super.delete()` since `xmlFreeDoc()` will be called
   }
 }
 

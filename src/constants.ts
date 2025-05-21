@@ -2,7 +2,7 @@ import { getNativeTypeSize } from "./internal/emscripten.ts";
 
 // 4 bytes by default, 8 bytes if `MEMORY64` is enabled
 // https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
-export const POINTER_SIZE: number = getNativeTypeSize("*");
+const POINTER_SIZE: number = getNativeTypeSize("*");
 
 /**
  * Emscripten represents a `ptr` as a `number` where `NULL` is `0`. This is true
@@ -13,4 +13,6 @@ export const POINTER_SIZE: number = getNativeTypeSize("*");
  * @remarks Every instance of 0 is not necessarily a null pointer; it can
  * indicate just a regular `int`
  */
-export const NULL_POINTER = 0;
+const NULL_POINTER = 0;
+
+export { NULL_POINTER, POINTER_SIZE };

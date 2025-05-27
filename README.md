@@ -37,6 +37,8 @@ This library is fairly niche and is not intended to be a drop-in replacement for
 
 i.e. if all the aforementioned libraries can't transform your XML document but the `xsltproc` CLI tool can do so easily without any issues, you might consider using this library.
 
+To view a demo of the library in action, check out the website [libxslt-wasm-demo.pages.dev](https://libxslt-wasm-demo.pages.dev/) ([source code](https://github.com/jeremy-code/libxslt-wasm-demo)).
+
 ```ts
 import { writeFile } from "fs/promises";
 

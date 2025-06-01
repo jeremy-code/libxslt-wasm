@@ -1,5 +1,13 @@
 # libxslt-wasm
 
+<!-- Link references -->
+
+[npm-package]: https://www.npmjs.com/package/libxslt-wasm
+[license-badge]: https://img.shields.io/github/license/jeremy-code/libxslt-wasm
+[npm-version-badge]: https://img.shields.io/npm/v/libxslt-wasm
+
+[![License][license-badge]](LICENSE) [![NPM version][npm-version-badge]][npm-package]
+
 A WebAssembly port of [libxslt](https://gitlab.gnome.org/GNOME/libxslt) (XSLT 1.0) and [libxml2](https://gitlab.gnome.org/GNOME/libxml2) for Node.js using [Emscripten](https://emscripten.org/).
 
 If you're looking for a well-maintained JavaScript XML/XSLT library, you should consider using one of the following libraries instead:

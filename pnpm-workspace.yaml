@@ -1,7 +1,6 @@
 # https://pnpm.io/settings
 
 # Build Settings (https://pnpm.io/settings#build-settings)
-nodeOptions: "--import=./setup.js --experimental-vm-modules"
 verifyDepsBeforeRun: "install"
 onlyBuiltDependencies:
   - unrs-resolver

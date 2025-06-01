@@ -1,37 +1,7 @@
 {
-  "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig to read more about this file */
-
-    /* Language and Environment */
-    "target": "ES2024",
-    "lib": ["ES2024", "ESNext.Disposable"],
-    "moduleDetection": "force",
-
-    /* Modules */
-    "module": "NodeNext",
-    "rootDir": "src/",
-    "types": ["node"],
-    "rewriteRelativeImportExtensions": true,
-    "resolvePackageJsonExports": true,
-    "resolvePackageJsonImports": true,
-
-    /* Emit */
-    "declaration": true,
-    "outDir": "dist",
-
-    /* Interop Constraints */
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-    "esModuleInterop": true,
-
-    /* Type Checking */
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-
-    /* Completeness */
-    "skipLibCheck": true
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["src/**/__tests__/**/*.ts", "src/**/*.test.ts"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.spec.json" }
+  ]
 }

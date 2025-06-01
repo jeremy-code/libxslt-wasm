@@ -1,12 +1,22 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.app.json",
   "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+
     /* Modules */
     "rewriteRelativeImportExtensions": false,
+
+    /* Emit */
+    "noEmit": true,
 
     /* JavaScript Support */
     // https://kulshekhar.github.io/ts-jest/docs/guides/troubleshooting#tests-gets-stuck-when-importing-a-dependency
     "allowJs": false
   },
-  "exclude": null
+  "include": [
+    "src/**/__fixtures__/**/*.ts",
+    "src/**/__utils__/**/*.ts",
+    "src/**/*.test.ts"
+  ],
+  "exclude": []
 }

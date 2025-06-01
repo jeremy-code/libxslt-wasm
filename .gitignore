@@ -19,6 +19,9 @@ coverage
 dist/
 local/
 
+# TypeScript cache
+*.tsbuildinfo
+
 # Logs
 logs
 *.log

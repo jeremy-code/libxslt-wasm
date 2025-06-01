@@ -35,7 +35,4 @@ export const {
   // libgetvalue.js
   getValue,
   setValue,
-
-  // libfs_shared.js
-  FS,
 } = libxslt;

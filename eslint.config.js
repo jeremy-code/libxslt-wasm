@@ -1,7 +1,9 @@
+import { defineConfig, globalIgnores } from "@eslint/config-helpers";
 import eslint from "@eslint/js";
-import { defineConfig, globalIgnores } from "eslint/config";
+import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
-import pluginImportX, { createNodeResolver } from "eslint-plugin-import-x";
+import pluginESx from "eslint-plugin-es-x";
+import { importX, createNodeResolver } from "eslint-plugin-import-x";
 import pluginJest from "eslint-plugin-jest";
 import nodePlugin from "eslint-plugin-n";
 import pluginPromise from "eslint-plugin-promise";
@@ -25,11 +27,15 @@ export default defineConfig(
    */
   { name: "@eslint/js/recommended", ...eslint.configs.recommended },
   tseslint["configs"].recommended,
-  pluginImportX["flatConfigs"].recommended,
-  pluginImportX["flatConfigs"].typescript,
-  nodePlugin.configs["flat/recommended-script"],
+  importX["flatConfigs"].recommended,
+  importX["flatConfigs"].typescript,
+  nodePlugin.configs["flat/recommended-module"],
+  comments.recommended,
   pluginPromise.configs["flat/recommended"],
+  pluginESx.configs["flat/restrict-to-es2022"],
   {
+    linterOptions: { reportUnusedDisableDirectives: true },
+    languageOptions: { ecmaVersion: 2022 },
     rules: {
       /**
        * @see {@link https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/newline-after-import.md}

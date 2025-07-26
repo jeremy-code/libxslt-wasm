@@ -3,6 +3,7 @@
 # Build Settings (https://pnpm.io/settings#build-settings)
 verifyDepsBeforeRun: "install"
 onlyBuiltDependencies:
+  - lefthook
   - unrs-resolver
 
 # https://pnpm.io/cli/run#shellemulator

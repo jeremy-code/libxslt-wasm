@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-# Git pre-commit hook script to run `lint-staged` on staged files
-
-pnpm exec lint-staged

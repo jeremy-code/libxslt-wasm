@@ -1,1 +1,1 @@
-export * from "./register.ts";
+export { registerModule, registerAll } from "./register.ts";

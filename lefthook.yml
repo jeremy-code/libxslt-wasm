@@ -1,0 +1,14 @@
+# Refer for explanation to following link:
+# https://lefthook.dev/configuration/
+
+lefthook: node_modules/.bin/lefthook
+
+pre-commit:
+  parallel: true
+  jobs:
+    - run: |
+        pnpm run lint {staged_files}
+        pnpm run format:check {staged_files}
+      glob: "*.{js,jsx,ts,tsx}"
+    - run: pnpm run format:check {staged_files}
+      glob: "*.{json,jsonc,md,yaml,yml}"

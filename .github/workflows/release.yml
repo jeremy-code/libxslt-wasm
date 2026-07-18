@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types:
+      - completed
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: write # Required to create release
+      pull-requests: write # Required to create PR
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v6
+        with:
+          # Fetch all history for all branches and tags so that changesets can
+          # compare against the correct base branch
+          fetch-depth: 0
+          submodules: true
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and run Dev Container task
+        uses: devcontainers/ci@v0.3
+        with:
+          # Otherwise, "No runCmd set - skipping starting/running container".
+          # Hence, using `true` no-op
+          # (https://www.gnu.org/software/coreutils/manual/html_node/true-invocation.html)
+          runCmd: true
+          push: never
+          cacheFrom: type=gha
+          cacheTo: type=gha,mode=max
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Create pull request for version bump and publish to npm
+        uses: changesets/action@v1
+        with:
+          publish: pnpm stage publish
+          version: pnpm exec changeset version
+          commit: "chore(release): version packages"
+          title: "chore(release): version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

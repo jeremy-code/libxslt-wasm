@@ -53,6 +53,7 @@
     "./output/libxslt.wasm": "./dist/output/libxslt.wasm"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.1",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
     "@eslint/config-helpers": "^0.3.0",
     "@eslint/js": "^9.32.0",

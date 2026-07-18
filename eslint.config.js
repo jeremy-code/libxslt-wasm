@@ -19,7 +19,7 @@ export default defineConfig(
    *
    * @see {@link https://eslint.org/docs/latest/use/configure/configuration-files#globally-ignoring-files-with-ignores}
    */
-  globalIgnores(["dist/", "libxml2/", "libxslt/"]),
+  globalIgnores(["dist/"]),
   /**
    * Add `name` property to "recommended" ESLint config, which doesn't exist for compatibility
    *

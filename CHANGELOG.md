@@ -1,5 +1,14 @@
 # libxslt-wasm
 
+## 0.0.17
+
+### Patch Changes
+
+- f338700: refactor: migrate tests from Jest to Vitest
+- 40c20d8: chore: prune extraneous libxml2, libxslt function exports
+- 7709d56: chore: remove extraneous runtime_methods
+- 541e609: chore: update to Node version v26.5.0
+
 ## 0.0.16
 
 ### Patch Changes

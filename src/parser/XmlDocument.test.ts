@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test } from "vitest";
 
 import { XmlDocument } from "./XmlDocument.ts";
 import { NULL_POINTER } from "../constants.ts";

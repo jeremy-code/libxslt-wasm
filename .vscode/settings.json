@@ -4,11 +4,9 @@
     // Avoid using "source.organizeImports" since it conflicts with `eslint-plugin-import-x`
   },
   "eslint.useFlatConfig": true,
-  "jest.jestCommandLine": "pnpm run test --",
-  "jest.runMode": "watch",
   "js/ts.tsdk.promptToUseWorkspaceVersion": true, // Enables prompting of users to use the TypeScript version configured in the workspace for Intellisense
   "js/ts.preferences.autoImportSpecifierExcludeRegexes": [
-    "^node:test$" // Otherwise, TypeScript imports from "node:test" instead of "jest"
+    "^node:test$" // Otherwise, TypeScript imports from "node:test" instead of "vitest"
   ],
   "js/ts.preferences.importModuleSpecifierEnding": "js", // Do not shorten path endings; include the `.js` or `.ts` extension
   "js/ts.tsdk.path": "./node_modules/typescript/lib",

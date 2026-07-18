@@ -27,7 +27,7 @@
         "esbenp.prettier-vscode",
         "ms-azuretools.vscode-docker",
         "ms-vscode.cpptools",
-        "orta.vscode-jest"
+        "vitest.explorer"
       ]
     }
   },

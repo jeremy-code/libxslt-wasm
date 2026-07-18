@@ -1,4 +1,4 @@
-import { expect, test } from "@jest/globals";
+import { expect, test } from "vitest";
 
 import { XmlDocument, XsltStylesheet } from "libxslt-wasm";
 import { registerModule } from "libxslt-wasm/exslt";
@@ -6,7 +6,7 @@ import { registerModule } from "libxslt-wasm/exslt";
 // Temporary test to verify that the library is working while the test suite
 // is being developed. This test will be removed once the test suite is
 // complete.
-// eslint-disable-next-line jest/no-disabled-tests
+// eslint-disable-next-line vitest/no-disabled-tests
 test.skip("dummy test", async () => {
   registerModule("common"); // Register EXSLT common module
 

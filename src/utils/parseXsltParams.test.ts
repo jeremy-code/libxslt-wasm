@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it } from "vitest";
 
 import { parseXsltParams } from "./parseXsltParams.ts";
 import { UTF8ToString } from "../internal/emscripten.ts";

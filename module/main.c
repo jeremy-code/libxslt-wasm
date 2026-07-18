@@ -11,8 +11,9 @@ EM_ASYNC_JS(void, fetchBytes, (const char *url, void **pbuffer, int *pnum, int *
   const response = await fetch(UTF8ToString(url), {
     // Prioritize XML documents (including application/*+xml) based on MIME type
     headers: {
-      "Accept": "application/xslt+xml, application/xml, text/xml, application/xhtml+xml;q=0.8, application/*; q=0.6, */*;q=0.5",
-    }
+      Accept:
+        "application/xslt+xml, application/xml, text/xml, application/xhtml+xml;q=0.8, application/*; q=0.6, */*;q=0.5",
+    },
   });
 
   if (!response.ok) {
@@ -21,8 +22,9 @@ EM_ASYNC_JS(void, fetchBytes, (const char *url, void **pbuffer, int *pnum, int *
     setValue(perror, response.status, "i32");
   } else {
     const responseBytes = await response.bytes();
-    const bufferToFill =
-        _malloc(responseBytes.length * responseBytes.BYTES_PER_ELEMENT);
+    const bufferToFill = _malloc(
+      responseBytes.length * responseBytes.BYTES_PER_ELEMENT,
+    );
     HEAPU8.set(responseBytes, bufferToFill);
     setValue(pnum, responseBytes.length, "i32");
     setValue(perror, 0, "i32");

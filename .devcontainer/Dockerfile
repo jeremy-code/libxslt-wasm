@@ -59,7 +59,6 @@ RUN set -o errexit -o nounset -o xtrace; \
     --enable-static \
     --disable-shared \
     --without-python \
-    --with-threads \
     --with-libxml-prefix=${INSTALL_DIR} \
   ; \
   emmake make --jobs="$(getconf _NPROCESSORS_ONLN)"; \

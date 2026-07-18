@@ -1,6 +1,6 @@
 import { defineConfig, globalIgnores } from "@eslint/config-helpers";
 import eslint from "@eslint/js";
-import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
+import * as comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import pluginESx from "eslint-plugin-es-x";
 import { importX, createNodeResolver } from "eslint-plugin-import-x";

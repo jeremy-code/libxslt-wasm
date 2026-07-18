@@ -1,21 +1,8 @@
-# main.c
-libxsltWasmExternalEntityLoader
 # libxml2
-xmlLoadResource
-xmlCtxtNewInputFromUrl
-xmlCtxtReadFile
-xmlLoadExternalEntity
-xmlNewEntityInputStream
-xmlParseCtxtExternalEntity
 xmlXPathCompOpEval
 xmlReadFile
 xmlReadMemory
 # libxslt
-xsltDocumentFunctionLoadDocument
-xsltLoadDocument
-xsltDocumentFunction
-xsltDocDefaultLoaderFunc
 xsltApplyStylesheet
-xsltParseStylesheetFile
 xsltLoadStylesheetPI
 xsltParseStylesheetDoc

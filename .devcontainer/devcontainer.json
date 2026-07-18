@@ -3,8 +3,15 @@
 {
   // General devcontainer.json properties
   "name": "libxslt",
-  "containerUser": "emscripten",
-  "build": { "context": "..", "dockerfile": "./Dockerfile" },
+  "containerEnv": { "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0" },
+  "containerUser": "ubuntu",
+  "mounts": [
+    {
+      "source": "pnpm-volume",
+      "target": "/home/ubuntu/.local/share/pnpm,type=volume",
+      "type": "volume"
+    }
+  ],
   "features": { "ghcr.io/devcontainers/features/node:1": {} },
   "customizations": {
     "vscode": {
@@ -18,6 +25,9 @@
     }
   },
 
-  //  Lifecycle scripts
-  "postCreateCommand": ". ${NVM_DIR}/nvm.sh && nvm install && corepack install && corepack enable && pnpm config set storeDir $HOME/.local/share/pnpm/store && pnpm install --force && pnpm build:libxslt && pnpm compile"
+  // Image or Dockerfile specific properties
+  "build": { "context": "..", "dockerfile": "./Dockerfile" },
+
+  // Lifecycle scripts
+  "postCreateCommand": ".devcontainer/post-create.sh"
 }

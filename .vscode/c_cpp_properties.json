@@ -24,10 +24,7 @@
       "compilerPath": "/emsdk/upstream/bin/clang++",
       "compilerArgs": ["${EMSCRIPTEN_CFLAGS}"],
       "intelliSenseMode": "linux-clang-x64",
-      "includePath": [
-        "${workspaceFolder}/local/include",
-        "${workspaceFolder}/local/include/**"
-      ]
+      "includePath": ["/usr/local/include/**"]
     }
   ],
   "version": 4,

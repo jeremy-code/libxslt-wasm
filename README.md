@@ -87,6 +87,6 @@ However, there are some caveats:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. It makes use of the following libraries:
 
-- [libxml2](https://gitlab.gnome.org/GNOME/libxml2) which is licensed under the MIT License ([libxml2/Copyright](libxml2/Copyright))
-- [libxslt](https://gitlab.gnome.org/GNOME/libxslt) which is licensed under the MIT License ([libxslt/Copyright](libxslt/Copyright))
+- [libxml2](https://gitlab.gnome.org/GNOME/libxml2) which is licensed under the MIT License ([GNOME/libxml2](https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright))
+- [libxslt](https://gitlab.gnome.org/GNOME/libxslt) which is licensed under the MIT License ([GNOME/libxslt](https://gitlab.gnome.org/GNOME/libxslt/-/blob/master/Copyright))
 - [Emscripten](https://emscripten.org/) which is available under 2 licenses, the MIT license and the University of Illinois/NCSA Open Source License ([emscripten-core/emscripten](https://github.com/emscripten-core/emscripten/blob/main/LICENSE))

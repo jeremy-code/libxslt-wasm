@@ -1,10 +1,25 @@
 # https://pnpm.io/settings
 
-# Build Settings (https://pnpm.io/settings#build-settings)
-verifyDepsBeforeRun: "install"
-onlyBuiltDependencies:
-  - lefthook
-  - unrs-resolver
+# Dependency Resolution (https://pnpm.io/settings#dependency-resolution)
+minimumReleaseAge: 1440 # 1 day in minutes
+minimumReleaseAgeStrict: true
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  # semver began publishing packages with provenance in 7.5.1. However, their v6
+  # packages (including 6.3.1 which was published after 7.5.1) do not. Since
+  # 6.3.1 was published in 2023-07-10, and no known vulnerability has been
+  # reported, it is ignored.
+  #
+  # https://github.com/pnpm/pnpm/issues/10202
+  - semver@6.3.1
+blockExoticSubdeps: true
 
-# https://pnpm.io/cli/run#shellemulator
+# Build settings (https://pnpm.io/settings#build-settings)
+verifyDepsBeforeRun: install
+strictDepBuilds: true
+allowBuilds:
+  lefthook: true
+  unrs-resolver: true
+
+# Other Settings (https://pnpm.io/settings#other-settings)
 shellEmulator: true

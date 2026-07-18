@@ -5,7 +5,21 @@
   "name": "libxslt",
   "containerEnv": { "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0" },
   "containerUser": "ubuntu",
-  "features": { "ghcr.io/devcontainers/features/node:1": {} },
+  "features": {
+    "ghcr.io/devcontainers/features/node:2": {
+      // Otherwise, defaults to lts
+      "version": "26.5.0",
+      "pnpmVersion": "none",
+      /**
+       * Otherwise, it attempts to use corepack from
+       * /emsdk/node/22.16.0_64bit/bin/corepack, resulting in error:
+       * EACCES: permission denied, symlink
+       * '../lib/node_modules/corepack/dist/pnpm.js' ->
+       * '/emsdk/node/22.16.0_64bit/bin/pnpm'
+       */
+      "installYarnUsingApt": true
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [

@@ -1,6 +1,8 @@
-import { defineConfig, globalIgnores } from "@eslint/config-helpers";
+import { fileURLToPath } from "node:url";
+
 import eslint from "@eslint/js";
 import * as comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
+import { defineConfig, includeIgnoreFile } from "eslint/config";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import pluginESx from "eslint-plugin-es-x";
 import { importX, createNodeResolver } from "eslint-plugin-import-x";
@@ -8,27 +10,19 @@ import pluginJest from "eslint-plugin-jest";
 import nodePlugin from "eslint-plugin-n";
 import pluginPromise from "eslint-plugin-promise";
 import { defaults } from "jest-config";
-import tseslint from "typescript-eslint";
+import * as tseslint from "typescript-eslint";
 
 // [ "**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)" ]
 const TEST_FILE_GLOBS = defaults.testMatch;
 
+const gitignorePath = fileURLToPath(new URL(".gitignore", import.meta.url));
+
 export default defineConfig(
-  /**
-   * Set global ignore patterns for build artifacts and git submodules
-   *
-   * @see {@link https://eslint.org/docs/latest/use/configure/configuration-files#globally-ignoring-files-with-ignores}
-   */
-  globalIgnores(["dist/"]),
-  /**
-   * Add `name` property to "recommended" ESLint config, which doesn't exist for compatibility
-   *
-   * @see {@link https://github.com/eslint/eslint/blob/main/packages/js/src/configs/eslint-recommended.js#L11-L17}
-   */
-  { name: "@eslint/js/recommended", ...eslint.configs.recommended },
-  tseslint["configs"].recommended,
-  importX["flatConfigs"].recommended,
-  importX["flatConfigs"].typescript,
+  includeIgnoreFile(gitignorePath, { gitignoreResolution: true }),
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  importX.flatConfigs.recommended,
+  importX.flatConfigs.typescript,
   nodePlugin.configs["flat/recommended-module"],
   comments.recommended,
   pluginPromise.configs["flat/recommended"],

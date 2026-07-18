@@ -74,7 +74,4 @@ RUN set -o errexit -o nounset -o xtrace; \
 
 USER ubuntu
 
-RUN set -o errexit -o nounset -o xtrace; \
-  mkdir --parents "${XDG_DATA_HOME:="$HOME/.local/share"}/pnpm/store"
-
 CMD ["/bin/bash"]

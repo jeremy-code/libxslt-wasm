@@ -30,6 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# pnpm store
+.pnpm-store
+
 # Misc
 .DS_Store
 *.pem

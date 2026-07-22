@@ -53,10 +53,8 @@ class XmlOutputBuffer extends DataSegment {
       throw new Error("XML output buffer already disposed");
     }
 
-    const content = xmlOutputBufferGetContent(this.byteOffset);
-    const outputString = UTF8ToString(content);
-
-    return outputString;
+    // Pointer to data held in output buffer
+    return UTF8ToString(xmlOutputBufferGetContent(this.byteOffset));
   }
 
   override delete() {

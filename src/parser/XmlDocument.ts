@@ -27,43 +27,52 @@ class XmlDocument extends DataSegment {
     url: string,
     { encoding, options }: XmlDocumentBaseOptions = {},
   ) {
-    const encodingPtr = encoding ? stringToNewUTF8(encoding) : NULL_POINTER;
+    const encodingPtr = encoding ? stringToNewUTF8(encoding) : null;
     const urlPtr = stringToNewUTF8(url);
-    const xmlDocument = new XmlDocument(
-      await xmlReadFile(urlPtr, encodingPtr, parseXmlOptions(options ?? {})),
+    const xmlDocumentPtr = await xmlReadFile(
+      urlPtr,
+      encodingPtr ?? NULL_POINTER,
+      parseXmlOptions(options ?? {}),
     );
-    if (encodingPtr !== NULL_POINTER) {
+
+    if (encodingPtr !== null) {
       free(encodingPtr);
     }
     free(urlPtr);
-    return xmlDocument;
+
+    if (xmlDocumentPtr === NULL_POINTER) {
+      throw new Error("Invalid XMLDocument");
+    }
+    return new XmlDocument(xmlDocumentPtr);
   }
 
   static async fromString(
     xmlString: string,
     { encoding, url, options }: XmlDocumentBaseOptions & { url?: string } = {},
   ) {
-    const xmlStringPtr =
-      xmlString !== "" ? stringToNewUTF8(xmlString) : NULL_POINTER;
-    const urlPtr = url ? stringToNewUTF8(url) : NULL_POINTER;
-    const encodingPtr = encoding ? stringToNewUTF8(encoding) : NULL_POINTER;
+    const xmlStringPtr = stringToNewUTF8(xmlString);
+    const urlPtr = url ? stringToNewUTF8(url) : null;
+    const encodingPtr = encoding ? stringToNewUTF8(encoding) : null;
 
-    const xmlDocument = new XmlDocument(
-      await xmlReadDoc(
-        xmlStringPtr,
-        urlPtr,
-        encodingPtr,
-        parseXmlOptions(options ?? {}),
-      ),
+    const xmlDocumentPtr = await xmlReadDoc(
+      xmlStringPtr ?? NULL_POINTER,
+      urlPtr ?? NULL_POINTER,
+      encodingPtr ?? NULL_POINTER,
+      parseXmlOptions(options ?? {}),
     );
-    if (encodingPtr !== NULL_POINTER) {
+
+    free(xmlStringPtr);
+    if (encodingPtr !== null) {
       free(encodingPtr);
     }
-    if (urlPtr !== NULL_POINTER) {
+    if (urlPtr !== null) {
       free(urlPtr);
     }
-    free(xmlStringPtr);
-    return xmlDocument;
+
+    if (xmlDocumentPtr === NULL_POINTER) {
+      throw new Error("Invalid XMLDocument");
+    }
+    return new XmlDocument(xmlDocumentPtr);
   }
 
   static async fromBuffer(
@@ -80,29 +89,39 @@ class XmlDocument extends DataSegment {
     const bufferPtr = malloc(buffer.byteLength);
     HEAPU8.set(buffer, bufferPtr);
 
-    const urlPtr = url ? stringToNewUTF8(url) : NULL_POINTER;
-    const encodingPtr = encoding ? stringToNewUTF8(encoding) : NULL_POINTER;
+    const urlPtr = url ? stringToNewUTF8(url) : null;
+    const encodingPtr = encoding ? stringToNewUTF8(encoding) : null;
 
-    return new XmlDocument(
-      await xmlReadMemory(
-        bufferPtr,
-        buffer.byteLength,
-        urlPtr,
-        encodingPtr,
-        parseXmlOptions(options ?? {}),
-      ),
+    const xmlDocumentPtr = await xmlReadMemory(
+      bufferPtr,
+      buffer.byteLength,
+      urlPtr ?? NULL_POINTER,
+      encodingPtr ?? NULL_POINTER,
+      parseXmlOptions(options ?? {}),
     );
+
+    if (encodingPtr !== null) {
+      free(encodingPtr);
+    }
+    if (urlPtr !== null) {
+      free(urlPtr);
+    }
+    free(bufferPtr);
+
+    if (xmlDocumentPtr === NULL_POINTER) {
+      throw new Error("Invalid XMLDocument");
+    }
+
+    return new XmlDocument(xmlDocumentPtr);
   }
 
   override delete() {
-    xmlFreeDoc(this.byteOffset);
+    if (this.byteOffset !== NULL_POINTER) {
+      xmlFreeDoc(this.byteOffset);
+    }
   }
 
-  /**
-   * Formats the XML document as a string by dumping the XML tree to an
-   * {@link XmlOutputBuffer} and returning its string representation.
-   */
-  override toString(options?: { format?: boolean; encoding?: Encoding }) {
+  toXmlOutputBuffer(options?: { format?: boolean; encoding?: Encoding }) {
     const xmlOutputBuffer = XmlOutputBuffer.allocate();
     const encodingPtr =
       options?.encoding ? stringToNewUTF8(options.encoding) : null;
@@ -123,6 +142,18 @@ class XmlDocument extends DataSegment {
       /* encoding */ encodingPtr ?? NULL_POINTER,
     );
 
+    if (encodingPtr !== NULL_POINTER) {
+      free(encodingPtr);
+    }
+    return xmlOutputBuffer;
+  }
+
+  /**
+   * Formats the XML document as a string by dumping the XML tree to an
+   * {@link XmlOutputBuffer} and returning its string representation.
+   */
+  override toString(options?: { format?: boolean; encoding?: Encoding }) {
+    const xmlOutputBuffer = this.toXmlOutputBuffer(options);
     const xmlString = xmlOutputBuffer.toString();
     xmlOutputBuffer.delete();
 
@@ -134,21 +165,21 @@ class XmlDocument extends DataSegment {
    * {@link XmlOutputBuffer} and returns the output buffer
    */
   toHtmlOutputBuffer(options?: { format?: boolean; encoding?: Encoding }) {
-    const xmlOutputBuffer = XmlOutputBuffer.allocate();
+    const htmlOutputBuffer = XmlOutputBuffer.allocate();
     const encodingPtr =
-      options?.encoding ? stringToNewUTF8(options.encoding) : NULL_POINTER;
+      options?.encoding ? stringToNewUTF8(options.encoding) : null;
 
     htmlDocContentDumpFormatOutput(
-      xmlOutputBuffer.byteOffset,
+      htmlOutputBuffer.byteOffset,
       this.byteOffset,
-      encodingPtr,
+      encodingPtr ?? NULL_POINTER,
       options?.format ? 1 : 0,
     );
 
-    if (encodingPtr !== NULL_POINTER) {
+    if (encodingPtr !== null) {
       free(encodingPtr);
     }
-    return xmlOutputBuffer;
+    return htmlOutputBuffer;
   }
 
   /**
@@ -156,10 +187,10 @@ class XmlDocument extends DataSegment {
    * {@link toHtmlOutputBuffer} and returns the string
    */
   toHtmlString(options?: { format?: boolean; encoding?: Encoding }) {
-    const xmlOutputBuffer = this.toHtmlOutputBuffer(options);
+    const htmlOutputBuffer = this.toHtmlOutputBuffer(options);
 
-    const xmlString = xmlOutputBuffer.toString();
-    xmlOutputBuffer.delete();
+    const xmlString = htmlOutputBuffer.toString();
+    htmlOutputBuffer.delete();
     return xmlString;
   }
 }

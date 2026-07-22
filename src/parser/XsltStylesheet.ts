@@ -16,8 +16,14 @@ class XsltStylesheet extends XmlDocument {
    * instance of XsltStylesheet
    */
   static async fromXmlDocument(xmlDocument: XmlDocument) {
-    const xsltStylesheet = await xsltParseStylesheetDoc(xmlDocument.byteOffset);
-    return new XsltStylesheet(xsltStylesheet);
+    const xsltStylesheetPtr = await xsltParseStylesheetDoc(
+      xmlDocument.byteOffset,
+    );
+
+    if (xsltStylesheetPtr === NULL_POINTER) {
+      throw new Error("Invalid XSLT stylesheet");
+    }
+    return new XsltStylesheet(xsltStylesheetPtr);
   }
 
   /**
@@ -67,7 +73,7 @@ class XsltStylesheet extends XmlDocument {
     const result = await xsltApplyStylesheet(
       this.byteOffset,
       xmlDocument.byteOffset,
-      xsltParams !== null ? xsltParams.byteOffset : NULL_POINTER,
+      xsltParams?.byteOffset ?? NULL_POINTER,
     );
     xsltParams?.delete();
     if (result === NULL_POINTER) {
@@ -100,7 +106,7 @@ class XsltStylesheet extends XmlDocument {
   }
 
   override delete() {
-    if (this.byteOffset !== null) {
+    if (this.byteOffset !== NULL_POINTER) {
       xsltFreeStylesheet(this.byteOffset);
     }
   }

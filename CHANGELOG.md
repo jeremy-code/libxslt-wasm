@@ -1,5 +1,13 @@
 # libxslt-wasm
 
+## 0.0.18
+
+### Patch Changes
+
+- 663e7fc: feat: fix null pointer handling in XmlDocument, XmlOutputBuffer, XsltStylesheet
+- f3b2b09: chore: rename Uint8Array buffer to data
+- 7cd4de6: test: add test for XmlDocument.fromBuffer
+
 ## 0.0.17
 
 ### Patch Changes

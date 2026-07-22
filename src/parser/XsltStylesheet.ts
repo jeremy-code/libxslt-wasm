@@ -57,10 +57,10 @@ class XsltStylesheet extends XmlDocument {
   }
 
   static override async from(
-    buffer: Uint8Array,
+    data: Uint8Array,
     { url, encoding, options }: XmlDocumentBaseOptions & { url?: string } = {},
   ) {
-    const xmlDocument = await super.from(buffer, { url, encoding, options });
+    const xmlDocument = await super.from(data, { url, encoding, options });
     return this.fromXmlDocument(xmlDocument);
   }
 

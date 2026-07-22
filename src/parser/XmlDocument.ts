@@ -83,18 +83,18 @@ class XmlDocument extends DataSegment {
   }
 
   static async from(
-    buffer: Uint8Array,
+    data: Uint8Array,
     { url, encoding, options }: XmlDocumentBaseOptions & { url?: string } = {},
   ) {
-    const bufferPtr = malloc(buffer.byteLength);
-    HEAPU8.set(buffer, bufferPtr);
+    const bufferPtr = malloc(data.byteLength);
+    HEAPU8.set(data, bufferPtr);
 
     const urlPtr = url ? stringToNewUTF8(url) : null;
     const encodingPtr = encoding ? stringToNewUTF8(encoding) : null;
 
     const xmlDocumentPtr = await xmlReadMemory(
       bufferPtr,
-      buffer.byteLength,
+      data.byteLength,
       urlPtr ?? NULL_POINTER,
       encodingPtr ?? NULL_POINTER,
       parseXmlOptions(options ?? {}),

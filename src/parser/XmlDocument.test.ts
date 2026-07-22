@@ -36,8 +36,8 @@ describe("XmlDocument", () => {
 
   describe(".from()", () => {
     test("should create an XMLDocument from a Uint8Array", async () => {
-      const buffer = Buffer.from(TEST_XML_STRING, "utf-8");
-      const xmlDocument = await XmlDocument.from(buffer, {
+      const data = Buffer.from(TEST_XML_STRING, "utf-8");
+      const xmlDocument = await XmlDocument.from(data, {
         url: "test.xml",
         encoding: "UTF-8",
         options: { pedantic: true },

@@ -55,7 +55,6 @@
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
-    "@eslint/config-helpers": "^0.6.0",
     "@eslint/js": "^10.0.1",
     "@types/node": "^24.13.3",
     "@vitest/eslint-plugin": "^1.6.23",

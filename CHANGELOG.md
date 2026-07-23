@@ -1,5 +1,12 @@
 # libxslt-wasm
 
+## 0.0.19
+
+### Patch Changes
+
+- a04346d: feat: remove barrel file for exslt
+- 7bc1630: feat: add new enum options from libexif@2.15 for xmlCharEncoding, xmlParserOption
+
 ## 0.0.18
 
 ### Patch Changes

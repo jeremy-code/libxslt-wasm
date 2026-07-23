@@ -39,7 +39,8 @@ EMSCRIPTEN_BINDINGS(Enum) {
       .value("ISO_8859_13", XML_CHAR_ENCODING_8859_13)
       .value("ISO_8859_14", XML_CHAR_ENCODING_8859_14)
       .value("ISO_8859_15", XML_CHAR_ENCODING_8859_15)
-      .value("ISO_8859_16", XML_CHAR_ENCODING_8859_16);
+      .value("ISO_8859_16", XML_CHAR_ENCODING_8859_16)
+      .value("WINDOWS_1252", XML_CHAR_ENCODING_WINDOWS_1252);
   // <libxml/parser.h>
   enum_<xmlParserOption>("xmlParserOption")
       .value("RECOVER", XML_PARSE_RECOVER)
@@ -68,7 +69,8 @@ EMSCRIPTEN_BINDINGS(Enum) {
       .value("NO_XXE", XML_PARSE_NO_XXE)
       .value("UNZIP", XML_PARSE_UNZIP)
       .value("NO_SYS_CATALOG", XML_PARSE_NO_SYS_CATALOG)
-      .value("CATALOG_PI", XML_PARSE_CATALOG_PI);
+      .value("CATALOG_PI", XML_PARSE_CATALOG_PI)
+      .value("SKIP_IDS", XML_PARSE_SKIP_IDS);
   enum_<xmlParserStatus>("xmlParserStatus")
       .value("NOT_WELL_FORMED", XML_STATUS_NOT_WELL_FORMED)
       .value("NOT_NS_WELL_FORMED", XML_STATUS_NOT_NS_WELL_FORMED)

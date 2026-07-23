@@ -8,7 +8,7 @@ import {
   exsltStrRegister,
   exsltRegisterAll,
   exsltSaxonRegister,
-} from "../internal/libexslt.ts";
+} from "./internal/libexslt.ts";
 
 // Corresponds to namespace "http://exslt.org/*"
 const EXSLT_MODULES_MAP = {

@@ -46,10 +46,6 @@
       "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     },
-    "./exslt": {
-      "types": "./dist/exslt/index.d.ts",
-      "default": "./dist/exslt/index.js"
-    },
     "./output/libxslt.wasm": "./dist/output/libxslt.wasm"
   },
   "devDependencies": {

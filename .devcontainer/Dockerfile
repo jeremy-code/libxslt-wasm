@@ -1,10 +1,13 @@
 # syntax=docker/dockerfile:1
 FROM emscripten/emsdk:6.0.0
 
+# https://gitlab.gnome.org/GNOME/libxml2/-/releases
+# https://gitlab.gnome.org/GNOME/libxslt/-/releases
 ENV \
   LIBXML2_VERSION=2.15.3 \
   LIBXSLT_VERSION=1.1.45
 
+# nvm is incompatible with PREFIX environment variable
 ENV INSTALL_DIR=/usr/local
 
 # https://emscripten.org/docs/compiling/Building-Projects.html#pkg-config
@@ -22,14 +25,16 @@ RUN set -o errexit -o nounset -o xtrace; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
+# Note: libxml2 is already installed by default on the Emscripten docker image
+# https://github.com/emscripten-core/emsdk/blob/e7479a395086caebaf4e8d9d974858241c4442d7/docker/Dockerfile#L77
 RUN set -o errexit -o nounset -o xtrace; \
-  LIBXML2_SOURCE_URL="https://gitlab.gnome.org/GNOME/libxml2/-/archive/v$LIBXML2_VERSION/libxml2-v$LIBXML2_VERSION.tar.gz"; \
-  LIBXML2_PATH="/usr/local/src/libxml2-$LIBXML2_VERSION"; \
+  LIBXML2_ARCHIVE_FILE="libxml2-v${LIBXML2_VERSION}.tar.gz" \
+  LIBXML2_SOURCE_URL="https://gitlab.gnome.org/GNOME/libxml2/-/archive/v$LIBXML2_VERSION/$LIBXML2_ARCHIVE_FILE"; \
+  LIBXML2_PATH="/usr/local/src/libxml2-v$LIBXML2_VERSION"; \
   \
-  wget --output-document "$LIBXML2_PATH.tar.gz" "$LIBXML2_SOURCE_URL"; \
-  mkdir --parents "$LIBXML2_PATH"; \
-  tar --extract --directory "$LIBXML2_PATH" --file "$LIBXML2_PATH.tar.gz" --strip-components 1; \
+  wget --directory-prefix $LIBXML2_PATH "$LIBXML2_SOURCE_URL"; \
   cd "$LIBXML2_PATH"; \
+  tar --extract --file "$LIBXML2_ARCHIVE_FILE" --one-top-level=$LIBXML2_PATH --strip-components 1; \
   autoreconf --force --install --warnings=all; \
   emconfigure ./configure \
     --prefix=${INSTALL_DIR} \
@@ -42,16 +47,18 @@ RUN set -o errexit -o nounset -o xtrace; \
     --with-threads \
   ; \
   emmake make --jobs="$(getconf _NPROCESSORS_ONLN)"; \
-  emmake make install
+  emmake make install; \
+  cd /; \
+  rm -rf "$LIBXML2_PATH"
 
-RUN set -o errexit -o nounset -o xtrace; \
-  LIBXSLT_SOURCE_URL="https://gitlab.gnome.org/GNOME/libxslt/-/archive/v$LIBXSLT_VERSION/libxslt-v$LIBXSLT_VERSION.tar.gz"; \
-  LIBXSLT_PATH="/usr/local/src/libxslt-$LIBXSLT_VERSION"; \
+  RUN set -o errexit -o nounset -o xtrace; \
+  LIBXSLT_ARCHIVE_FILE="libxslt-v$LIBXSLT_VERSION.tar.gz"; \
+  LIBXSLT_SOURCE_URL="https://gitlab.gnome.org/GNOME/libxslt/-/archive/v$LIBXSLT_VERSION/$LIBXSLT_ARCHIVE_FILE"; \
+  LIBXSLT_PATH="/usr/local/src/libxslt-v$LIBXSLT_VERSION"; \
   \
-  wget --output-document "$LIBXSLT_PATH.tar.gz" "$LIBXSLT_SOURCE_URL"; \
-  mkdir --parents "$LIBXSLT_PATH"; \
-  tar --extract --directory "$LIBXSLT_PATH" --file "$LIBXSLT_PATH.tar.gz" --strip-components 1; \
+  wget --directory-prefix $LIBXSLT_PATH "$LIBXSLT_SOURCE_URL"; \
   cd "$LIBXSLT_PATH"; \
+  tar --extract --file "$LIBXSLT_ARCHIVE_FILE" --one-top-level=$LIBXSLT_PATH --strip-components 1; \
   autoreconf --force --install --warnings=all; \
   emconfigure ./configure \
     --prefix=${INSTALL_DIR} \
@@ -62,7 +69,10 @@ RUN set -o errexit -o nounset -o xtrace; \
     --with-libxml-prefix=${INSTALL_DIR} \
   ; \
   emmake make --jobs="$(getconf _NPROCESSORS_ONLN)"; \
-  emmake make install
+  emmake make install; \
+  cd /; \
+  rm -rf "$LIBXSLT_PATH"
+
 
 # Since emconfigure and emmake have run previously, the emscripten symbol_lists
 # cache and its files will be owned by root. Therefore, when running the
@@ -73,4 +83,4 @@ RUN set -o errexit -o nounset -o xtrace; \
 
 USER ubuntu
 
-CMD ["/bin/bash"]
+ENTRYPOINT ["/emsdk/docker/entrypoint.sh"]

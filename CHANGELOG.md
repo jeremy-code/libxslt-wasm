@@ -1,5 +1,12 @@
 # libxslt-wasm
 
+## 0.0.20
+
+### Patch Changes
+
+- 1741f0b: chore: update Dev Container dockerfile
+- c965cfe: chore: update to Emscripten docker v6.0.3
+
 ## 0.0.19
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "libxslt-wasm",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "type": "module",
   "description": "JavaScript bindings for libxslt compiled to WebAssembly",
   "scripts": {
